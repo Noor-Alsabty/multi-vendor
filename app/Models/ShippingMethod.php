@@ -4,23 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Coupon extends Model
+class ShippingMethod extends Model
 {
     //
 
-
     protected $fillable = [
-        'code',
-        'discount_type',
-        'discount_value',
-        'start_date',
-        'end_date',
-        'usage_limit',
-        'used_count',
-        'applies_to',
+        'name',
+        'description',
     ];
 
-
+    
     public function orders()
     {
         return $this->hasMany(Order::class);

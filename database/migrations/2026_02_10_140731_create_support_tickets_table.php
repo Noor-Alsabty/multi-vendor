@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('subject');
             $table->text('description');
             $table->enum('status',['open','processing','closed','resolved','pending'])->default('pending');
-
-              
             $table->timestamps();
         });
     }

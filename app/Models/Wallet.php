@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wallet extends Model
 {
-    //
+protected $fillable = [
+        'vendor_id',
+        'balance',
+    ];
+    
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
+
+
 }
