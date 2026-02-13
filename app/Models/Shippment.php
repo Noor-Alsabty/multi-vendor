@@ -7,4 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class Shippment extends Model
 {
     //
+
+    protected $fillable = [
+        'order_id',
+        'carrier',
+        'tracking_number',
+    ];
+
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+
+
+
+
+
 }
