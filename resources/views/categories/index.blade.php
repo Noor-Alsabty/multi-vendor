@@ -135,6 +135,8 @@
                                     </form>
                                 </div>
                             </div>
+                            </div>
+
 
    
 <!-- Delete Modal -->
@@ -198,13 +200,25 @@
                         <div class="mb-3">
                             <label class="form-label">Parent category</label>
                             <select name="parent_id" class="form-select">
+
+    <option value="">None</option>
+
+    @foreach ($categories as $categori)
+        <option value="{{ $categori->id }}">
+            {{ $categori->name }}
+        </option>
+    @endforeach
+
+</select>
+
+                            <!-- <select name="parent_id" class="form-select">
                                                     <option value="">{{ $categorie->parent->name ?? 'None' }}
                                                     </option>
                                                     @foreach ($categories as $categori)
                                                         <option value="{{ $categori->id }}">{{ $categori->name }}
                                                         </option>
                                                     @endforeach
-                            </select>
+                            </select> -->
                         </div>
                     </div>
                     <div class="modal-footer">
