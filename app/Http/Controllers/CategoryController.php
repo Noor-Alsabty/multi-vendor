@@ -13,6 +13,9 @@ class CategoryController extends Controller
     public function index()
     {
         //
+          $categories = Category::all();//select * from departments
+        //  dd($category);
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -29,6 +32,14 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+ $request->validate([
+            "name"=>"required|string|max:255|min:3",
+            "parent_id"=>"nullable|exists:categories,id",
+            
+        ]);
+        Category::create($request->all());
+        return redirect()->route('categories.index')->with('success','category created successfully');
+
     }
 
     /**
@@ -50,16 +61,42 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
         //
+         $validated = $request->validate([
+            "name"=>"required|string|max:255|min:3",
+            "parent_id"=>"nullable|exists:categories,id",
+        ]);
+        Category::find($id)->update($validated);
+        return redirect()->route('categories.index')->with('success','Catgory updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
-    {
-        //
+    public function delete($id)
+{
+    $category = Category::findOrFail($id);
+
+    // منع الحذف إذا عنده تصنيفات فرعية
+    if ($category->children()->exists()) {
+        return redirect()->route('categories.index')
+                         ->with('error', 'Cannot delete category with subcategories.');
     }
+
+    // منع الحذف إذا عنده منتجات
+    if ($category->products()->exists()) {
+        return redirect()->route('categories.index')
+                         ->with('error', 'Cannot delete category with products.');
+    }
+
+    $category->delete();
+
+    return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+}
+        // {  Category::find($id)->delete();
+        // return redirect()->route('categories.index')->with('success','Department deleted successfully');}
+
+    
 }
