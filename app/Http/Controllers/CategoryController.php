@@ -30,14 +30,16 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+     { 
+        // dd($request->image);
         //
  $request->validate([
             "name"=>"required|string|max:255|min:3",
             "parent_id"=>"nullable|exists:categories,id",
             
         ]);
-        Category::create($request->all());
+      $category=  Category::create($request->all());
+        $category->addMedia($request->image)->toMediaCollection("category_images");
         return redirect()->route('categories.index')->with('success','category created successfully');
 
     }

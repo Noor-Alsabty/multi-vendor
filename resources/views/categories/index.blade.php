@@ -34,8 +34,6 @@
                             <td>{{ $categorie->name }}</td>
                             <td>{{ $categorie->parent->name ?? '-' }}</td>
                             <td> {{ $categorie->created_at?->format('d/m/Y') ?? '-' }}</td>
-
-                             
                          
 
                             <td class="text-end">
@@ -185,7 +183,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
 
-                <form method="POST" action="{{ route('categories.store') }}">
+                <form method="POST" action="{{ route('categories.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title">Create New category</h5>
@@ -211,14 +209,10 @@
 
 </select>
 
-                            <!-- <select name="parent_id" class="form-select">
-                                                    <option value="">{{ $categorie->parent->name ?? 'None' }}
-                                                    </option>
-                                                    @foreach ($categories as $categori)
-                                                        <option value="{{ $categori->id }}">{{ $categori->name }}
-                                                        </option>
-                                                    @endforeach
-                            </select> -->
+                           <div class="mb-3">
+                            <label class="form-label">Choose Image</label>
+                            <input type="file" name="image" class="form-control" accept="image/*" >
+                        </div>
                         </div>
                     </div>
                     <div class="modal-footer">
