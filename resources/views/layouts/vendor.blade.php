@@ -32,8 +32,8 @@
         <a href="#"><i class="fas fa-home"></i> Dashboard</a>
 
         <div class="sidebar-section">Product Management</div>
-        <a href="#"><i class="fas fa-box"></i> All Products</a>
-        <a href="#"><i class="fas fa-plus-circle"></i> Add New Product</a>
+        <a href="{{ route('products.index') }}"><i class="fas fa-box"></i> All Products</a>
+        <a href="{{ route('products.create') }}"><i class="fas fa-plus-circle"></i> Add New Product</a>
 
         <div class="sidebar-section">Orders & Shipping</div>
         <a href="#"><i class="fas fa-shopping-cart"></i> Received Orders</a>
