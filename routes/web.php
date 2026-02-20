@@ -12,11 +12,12 @@ Route::get('/vendor/dashboard', [VendorController::class, 'index'])->name('vendo
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products/create', 'create')->name('products.create');
-    Route::get('/products/index',  'index')->name('products.index');
+    Route::get('/products',  'index')->name('products.index');
     Route::post('/products/store', 'store')->name('products.store');
-    Route::put('/products/update/{id}', 'update')->name('products.update');
-    Route::get('/products/edit/{id}',  'edit')->name('products.edit');
-    Route::delete('/products/destroy/{id}', 'destroy')->name('products.destroy');
+    Route::put('/products/update/{product}', 'update')->name('products.update');
+    Route::get('/products/edit/{product}',  'edit')->name('products.edit');
+    Route::delete('/products/destroy/{product}', 'destroy')->name('products.destroy');
+    Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
 });
 Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('admin.index');
 // 

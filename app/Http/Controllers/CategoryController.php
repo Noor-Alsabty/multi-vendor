@@ -84,13 +84,13 @@ class CategoryController extends Controller
     // منع الحذف إذا عنده تصنيفات فرعية
     if ($category->children()->exists()) {
         return redirect()->route('categories.index')
-                         ->with('error', 'Cannot delete category with subcategories.');
+                        ->with('error', 'Cannot delete category with subcategories.');
     }
 
     // منع الحذف إذا عنده منتجات
     if ($category->products()->exists()) {
         return redirect()->route('categories.index')
-                         ->with('error', 'Cannot delete category with products.');
+                        ->with('error', 'Cannot delete category with products.');
     }
 
     $category->delete();

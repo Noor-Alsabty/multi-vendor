@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained('users');
-
-            $table->foreignId('shipping_method_id')->constrained(); 
             $table->foreignId('coupon_id')->nullable()->constrained();
             $table->decimal('total_amount',10,2);
             $table->string('status'); 
