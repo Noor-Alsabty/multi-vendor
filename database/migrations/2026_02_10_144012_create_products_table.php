@@ -18,7 +18,6 @@ return new class extends Migration
   $table->string('name');
   $table->text('description')->nullable();
   $table->decimal('price',10,2);
-  $table->boolean('is_active')->default(true);
   $table->integer('views')->default(0);
             $table->timestamps();
         });
