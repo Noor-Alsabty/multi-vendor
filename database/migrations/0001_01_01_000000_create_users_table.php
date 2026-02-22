@@ -19,15 +19,15 @@ return new class extends Migration
             $table->string('password');
             $table->string('first_name');
             $table->string('last_name');
-            
-    // Role system
-    $table->enum('role',['admin','vendor','customer'])->default('customer');
 
-    // Profile
-    $table->string('phone')->nullable();
-    $table->string('avatar')->nullable();
+            // Role system
+            $table->enum('role', ['admin', 'vendor', 'customer'])->default('customer');
 
-    // Status
+            // Profile
+            $table->string('phone')->nullable();
+            $table->string('avatar')->nullable();
+
+            // Status
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
             $table->date('date_of_birth')->nullable();
             $table->string('place_of_residence')->nullable();
@@ -66,7 +66,3 @@ return new class extends Migration
         Schema::dropIfExists('sessions');
     }
 };
-
-
-
-  
