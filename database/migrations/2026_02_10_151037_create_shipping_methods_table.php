@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->enum('name',['fast','slow'])->default('slow');
 
-             $table->text('description')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

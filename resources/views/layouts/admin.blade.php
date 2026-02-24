@@ -33,7 +33,7 @@
 
         <div class="sidebar-section">catgories Management</div>
         <a href="{{ route('categories.index') }}"><i class="fas fa-box"></i> All catgories</a>
-        <a href="{{ route('categories.store') }}"><i class="fas fa-plus-circle"></i> Add New catgory</a>
+ <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">  <i class="fas fa-plus-circle"></i> Add New catgory</button>
 
         <div class="sidebar-section">Orders & Shipping</div>
         <a href="#"><i class="fas fa-shopping-cart"></i> vendor Orders</a>

@@ -34,11 +34,24 @@
                             <td>{{ $categorie->name }}</td>
                             <td>{{ $categorie->parent->name ?? '-' }}</td>
                             <td> {{ $categorie->created_at?->format('d/m/Y') ?? '-' }}</td>
-
-                             
+<!-- 
+<td>
+    <img src="{{ $categorie->getFirstMediaUrl('category_images') ?: asset('images/default.png') }}"
+         style="width:50px; height:50px; object-fit:cover; border-radius:5px;" />
+</td> -->
                          
+<td>
+    @if($categorie->getFirstMediaUrl('category_images'))
+        <img src="{{ $categorie->getFirstMediaUrl('category_images') }}" 
+             alt="{{ $categorie->name }}" 
+             style="width:50px; height:50px; object-fit:cover; border-radius:5px;">
+    @else
+        -
+    @endif
+</td>
 
-                            <td class="text-end">
+
+                                            <td class="text-end">
                                 <button class="btn btn-sm btn-info" data-bs-toggle="modal"
                                     data-bs-target="#viewModal{{ $categorie->id }}">
                                     <i class="fas fa-eye"></i> View
@@ -87,7 +100,7 @@
                         <div class="modal fade" id="editModal{{ $categorie->id }}" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <form method="POST" action="{{ route('categories.update', $categorie->id) }}">
+                                    <form method="POST" action="{{ route('categories.update', $categorie->id) }}"  enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
                                         <div class="modal-header">
@@ -115,16 +128,11 @@
         @endif
     @endforeach
 </select>
-                                              <!-- <select name="parent_id" class="form-select">
-                                                    <option value="">{{ $categorie->parent->name ?? 'None' }}
-                                                    </option>
-                                                    @foreach ($categories as $categor)
-                                                        <option value="{{ $categor->id }}">{{ $categor->name }}
-                                                        </option>
-                                                    @endforeach
-
-
-                                                </select> -->
+   <div class="mb-3">
+                                                <label class="form-label">Choose Image</label>
+                                                <input type="file" name="image" class="form-control"
+                                                    accept="image/*">
+                                            </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -135,6 +143,8 @@
                                     </form>
                                 </div>
                             </div>
+                            </div>
+
 
    
 <!-- Delete Modal -->
@@ -183,7 +193,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
 
-                <form method="POST" action="{{ route('categories.store') }}">
+                <form method="POST" action="{{ route('categories.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title">Create New category</h5>
@@ -198,13 +208,21 @@
                         <div class="mb-3">
                             <label class="form-label">Parent category</label>
                             <select name="parent_id" class="form-select">
-                                                    <option value="">{{ $categorie->parent->name ?? 'None' }}
-                                                    </option>
-                                                    @foreach ($categories as $categori)
-                                                        <option value="{{ $categori->id }}">{{ $categori->name }}
-                                                        </option>
-                                                    @endforeach
-                            </select>
+
+    <option value="">None</option>
+
+    @foreach ($categories as $categori)
+        <option value="{{ $categori->id }}">
+            {{ $categori->name }}
+        </option>
+    @endforeach
+
+</select>
+
+                           <div class="mb-3">
+                            <label class="form-label">Choose Image</label>
+                            <input type="file" name="image" class="form-control" accept="image/*" >
+                        </div>
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->enum('verification_status',['pending','verified','rejected'])->default('pending');
             $table->text('verification_reject_reason')->nullable(); // سبب الرفض
-
             $table->timestamp('verification_date')->nullable(); 
             $table->timestamps();
         });
