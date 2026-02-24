@@ -24,7 +24,7 @@ return new class extends Migration
 
 
 
-// 'products', function (Blueprint $table) { $table->string('slug')->unique(); $table->string('status')->default('draft'); $table->integer('views')->default(0)
+        // 'products', function (Blueprint $table) { $table->string('slug')->unique(); $table->string('status')->default('draft'); $table->integer('views')->default(0)
 
 
 

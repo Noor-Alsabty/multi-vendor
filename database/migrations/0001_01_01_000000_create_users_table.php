@@ -13,31 +13,17 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('first_name');
             $table->string('last_name');
-    $table->enum('role',['admin','vendor','customer'])->default('customer');
-
-    // Profile
-    $table->string('phone')->nullable();
-    $table->string('avatar')->nullable();
-
-    // Status
+            $table->enum('role', ['admin', 'vendor', 'customer'])->default('customer');
+            $table->string('phone')->nullable();
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
-            $table->date('date_of_birth')->nullable();
-            $table->string('place_of_residence')->nullable();
-            $table->enum('gender', ['male', 'female'])->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
-
-
-
-
-
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -64,7 +50,3 @@ return new class extends Migration
         Schema::dropIfExists('sessions');
     }
 };
-
-
-
-  
