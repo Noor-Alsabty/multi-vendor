@@ -49,6 +49,7 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/vendors-requests/index', [VendorsRequestController::class, 'index'])->name('vendors-requests.index');
     Route::get('/vendors-requests/create', [VendorsRequestController::class, 'create'])->name('vendors-requests.create');
     Route::post('/vendors-requests/store', [VendorsRequestController::class, 'store'])->name('vendors-requests.store');
+});
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products/create', 'create')->name('products.create');
     Route::get('/products',  'index')->name('products.index');
