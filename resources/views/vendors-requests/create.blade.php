@@ -68,8 +68,6 @@
             <label class="form-label">Description</label>
             <input name="description" type="text" class="form-control" placeholder="Enter store description">
         </div>
-
-
         <div class="text-center">
             <button type="submit" class="btn btn-primary">
                 Request to join
