@@ -130,32 +130,69 @@
 
     <div class="dropdown-menu absolute right-0 w-48 bg-white border border-gray-100 shadow-xl rounded-xl z-50 overflow-hidden">
         <div class="py-2">
-            <div class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Account</div>
             
-            <a href="/login" class="block px-4 py-1 text-[12px] text-gray-700 hover:bg-black hover:text-white transition-all duration-200">
-                SIGN IN
-            </a>
-            
-            <a href="/register" class="block px-4 py-1 text-[12px] text-gray-700 hover:bg-black hover:text-white transition-all duration-200">
-                CREATE ACCOUNT
-            </a>
+            @auth
+                <div class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+                    Welcome, {{ Auth::user()->first_name }}
+                </div>
+                
+                <a href="{{ url('/profile') }}" class="block px-4 py-1 text-[12px] text-gray-700 hover:bg-black hover:text-white transition-all duration-200">
+                    MY ACCOUNT
+                </a>
+                
+                <a href="#" class="block px-4 py-1 text-[12px] text-gray-700 hover:bg-black hover:text-white transition-all duration-200">
+                    MY ORDERS
+                </a>
+
+                <div class="border-t border-gray-50 my-1"></div>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-left block px-4 py-1 text-[12px] text-red-600 hover:bg-red-50 transition-all duration-200 uppercase font-bold">
+                        Logout
+                    </button>
+                </form>
+            @else
+                <div class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Account</div>
+                
+                <a href="/login" class="block px-4 py-1 text-[12px] text-gray-700 hover:bg-black hover:text-white transition-all duration-200">
+                    SIGN IN
+                </a>
+                
+                <a href="/register" class="block px-4 py-1 text-[12px] text-gray-700 hover:bg-black hover:text-white transition-all duration-200">
+                    CREATE ACCOUNT
+                </a>
+            @endauth
 
             <div class="border-t border-gray-50 my-1"></div>
             
-            <a href="/vendor/register" class="block px-4 py-1 text-[10px] font-bold text-gray-900 hover:bg-gray-50 uppercase">
-                Sell on NOVA
-            </a>
+            <a href="{{ route('vendors-requests.create') }}" class="block px-4 py-1 text-[12px] text-blue-600 hover:bg-gray-100 transition-all duration-200 uppercase font-bold">
+    Sell on NOVA
+</a>
         </div>
     </div>
 </div>
-                <a class="pl-3 inline-block no-underline hover:text-black" href="#">
-                    <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path d="M21,7H7.462L5.91,3.586C5.748,3.229,5.392,3,5,3H2v2h2.356L9.09,15.414C9.252,15.771,9.608,16,10,16h8 c0.4,0,0.762-0.238,0.919-0.606l3-7c0.133-0.309,0.101-0.663-0.084-0.944C21.649,7.169,21.336,7,21,7z M17.341,14h-6.697L8.371,9 h11.112L17.341,14z" />
-                        <circle cx="10.5" cy="18.5" r="1.5" />
-                        <circle cx="17.5" cy="18.5" r="1.5" />
-                    </svg>
-                </a>
+<a class="pl-3 inline-block no-underline hover:text-black relative shake-it" 
+        href="{{ Auth::check() ? url('/cart') : url('/empty-cart') }}">
+    
+    <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M21,7H7.462L5.91,3.586C5.748,3.229,5.392,3,5,3H2v2h2.356L9.09,15.414C9.252,15.771,9.608,16,10,16h8 c0.4,0,0.762-0.238,0.919-0.606l3-7c0.133-0.309,0.101-0.663-0.084-0.944C21.649,7.169,21.336,7,21,7z M17.341,14h-6.697L8.371,9 h11.112L17.341,14z" />
+        <circle cx="10.5" cy="18.5" r="1.5" />
+        <circle cx="17.5" cy="18.5" r="1.5" />
+    </svg>
+    
+    @auth
+        @php
+            $totalItems = Auth::user()->cart ? Auth::user()->cart->items->sum('quantity') : 0;
+        @endphp
 
+        @if($totalItems > 0)
+            <span class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold border border-white shadow-sm">
+                {{ $totalItems }}
+            </span>
+        @endif
+    @endauth
+</a>
             </div>
         </div>
     </nav>
