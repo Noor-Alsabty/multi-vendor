@@ -73,6 +73,8 @@
                             <th>Name</th>
                             <th>Price</th>
                             <th>Views</th>
+                            <th>image</th>
+
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -87,6 +89,16 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->price }} $</td>
                                 <td>{{ $product->views }}</td>
+<td>
+    @if($product->images->count())
+        @foreach($product->images as $image)
+            <img src="{{ asset('storage/' . $image->image_url) }}" alt="{{ $product->name }}" width="50">
+        @endforeach
+    @else
+        <span>No Image</span>
+    @endif
+</td>
+
                                 <td>
                                     @if($product->is_active)
                                         <span class="badge bg-success-subtle text-success border border-success">Active</span>
@@ -112,6 +124,7 @@
                                         @endif
                                     </div>
                                 </td>
+            
                             </tr>
                         @endforeach
                     </tbody>
