@@ -25,7 +25,6 @@ class VendorsRequestController extends Controller
         if (!Auth::check()) {
             abort(403);
         }
-
         $request->validate([
             'store_name' => 'required|string|max:255',
             'store_email' => 'required|email|max:255',
@@ -46,4 +45,3 @@ class VendorsRequestController extends Controller
         ]);
         return redirect()->route('vendors-requests.index');
     }
-}
