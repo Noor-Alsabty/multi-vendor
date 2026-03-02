@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VendorController;
@@ -28,7 +29,7 @@ Route::middleware(['auth', 'vendor'])->group(function () {
     Route::get('/vendor/dashboard', [VendorController::class, 'index'])->name('vendor.dashboard');
     Route::controller(ProductController::class)->group(function () {
         Route::get('/products/create', 'create')->name('products.create');
-        Route::get('/products/index',  'index')->name('products.index');
+        Route::get('/products',  'index')->name('products.index');
         Route::post('/products/store', 'store')->name('products.store');
         Route::put('/products/update/{id}', 'update')->name('products.update');
         Route::get('/products/edit/{id}',  'edit')->name('products.edit');
@@ -43,19 +44,27 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{delete_id}', [CategoryController::class, 'delete'])->name('categories.delete');
+
+    Route::get('/vendors-requests/indexAdmin', [AdminController::class, 'indexAdmin'])->name('vendors-requests.indexAdmin');
+    Route::post('/vendors-requests/{id}/verify', [AdminController::class, 'verify'])->name('vendors-requests.verify');
+
+    Route::post('/vendors-requests/{id}/reject', [AdminController::class, 'reject'])->name('vendors-requests.reject');
 });
+
 
 Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/vendors-requests/index', [VendorsRequestController::class, 'index'])->name('vendors-requests.index');
     Route::get('/vendors-requests/create', [VendorsRequestController::class, 'create'])->name('vendors-requests.create');
     Route::post('/vendors-requests/store', [VendorsRequestController::class, 'store'])->name('vendors-requests.store');
-});
-Route::controller(ProductController::class)->group(function () {
-    Route::get('/products/create', 'create')->name('products.create');
-    Route::get('/products',  'index')->name('products.index');
-    Route::post('/products/store', 'store')->name('products.store');
-    Route::put('/products/update/{product}', 'update')->name('products.update');
-    Route::get('/products/edit/{product}',  'edit')->name('products.edit');
-    Route::delete('/products/destroy/{product}', 'destroy')->name('products.destroy');
-    Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
+
+    Route::controller(ProductController::class)->group(function () {
+
+        Route::get('/products',  'index')->name('products.index');
+        /*   Route::get('/products/create', 'create')->name('products.create');
+        Route::post('/products/store', 'store')->name('products.store');
+        Route::put('/products/update/{product}', 'update')->name('products.update');
+        Route::get('/products/edit/{product}',  'edit')->name('products.edit');
+        Route::delete('/products/destroy/{product}', 'destroy')->name('products.destroy');
+        Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');*/
+    });
 });

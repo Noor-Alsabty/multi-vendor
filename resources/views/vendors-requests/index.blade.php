@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>request to admin</title>
+    <title>requests to admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,10 +25,10 @@
                                 {{ ucfirst($existingRequest->status) }}
 
 
-                                @if ($existingRequest->status === 'rejected' && $existingRequest->verification_reject_reason)
+                                @if ($existingRequest->status === 'rejected' && $existingRequest->reject_reason)
                                     <div class="mt-2">
                                         <strong>Reason:</strong>
-                                        {{ $existingRequest->verification_reject_reason }}
+                                        {{ $existingRequest->reject_reason }}
                                     </div>
                                 @endif
                             </div>

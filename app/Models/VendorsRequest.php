@@ -17,7 +17,7 @@ class VendorsRequest extends Model
         'store_logo',
         'description',
         'status',
-        'verification_reject_reason',
+        'reject_reason',
         'verification_date',
     ];
     public function user()
