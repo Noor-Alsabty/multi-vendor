@@ -45,3 +45,4 @@ class VendorsRequestController extends Controller
         ]);
         return redirect()->route('vendors-requests.index');
     }
+}

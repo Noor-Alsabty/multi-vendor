@@ -94,7 +94,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label class="small fw-bold">SKU</label>
-                                    <input type="text" name="variants[0][sku]" class="form-control form-control-sm" placeholder="SKU-123">
+                                    <input type="text" name="variants[0][SKU]" class="form-control form-control-sm" placeholder="SKU-123">
                                 </div>
                                 <div class="col-md-3">
                                     <label class="small fw-bold">Stock</label>

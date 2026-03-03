@@ -69,7 +69,7 @@ class ProductController extends Controller
             'variants.*.color' => 'required|string',
             'variants.*.size'  => 'required|string',
             'variants.*.stock' => 'required|integer|min:0',
-            'variants.*.sku'   => 'required|string|unique:product_variants,SKU',
+            'variants.*.SKU'   => 'required|string|unique:product_variants,SKU',
         ]);
 
         $product = Product::create($productData);
@@ -131,7 +131,7 @@ class ProductController extends Controller
             'variants.*.color' => 'required|string',
             'variants.*.size'  => 'required|string',
             'variants.*.stock' => 'required|integer|min:0',
-            'variants.*.sku'   => 'required|string',
+            'variants.*.SKU'   => 'required|string',
         ]);
 
         $product->update($productData);
