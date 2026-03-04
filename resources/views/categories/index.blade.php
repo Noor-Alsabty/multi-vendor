@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 
-@section('title', 'Departments')
+@section('title', 'categories')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 fw-bold">Departments</h1>
-            <p class="text-muted">List of all university departments</p>
+            <h1 class="h3 fw-bold">categories</h1>
+            <p class="text-muted">List of all  categories</p>
         </div>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-            <i class="fas fa-plus me-2"></i>Create New Department
+            <i class="fas fa-plus me-2"></i>Create New category
         </button>
     </div>
 
@@ -20,9 +20,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Parent Department</th>
+                        <th>Parent category</th>
                         <th>Created At</th>
-
+                        <th>Image</th>
                         <th class="text-end">Actions</th>
                     </tr>
                 </thead>

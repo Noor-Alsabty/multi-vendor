@@ -9,8 +9,9 @@ use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VendorsRequestController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function () {  $user = auth()->user();
+    return view('welcome', [
+        'user' => $user]);
 });
 
 Route::get('/dashboard', function () {
