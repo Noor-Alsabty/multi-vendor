@@ -140,9 +140,26 @@
                     MY ACCOUNT
                 </a>
                 
-                <a href="#" class="block px-4 py-1 text-[12px] text-gray-700 hover:bg-black hover:text-white transition-all duration-200">
+            
+                                 @if ($user->role === 'admin')
+    <a href="/admin/dashboard" class="block px-4 py-1 text-[12px] text-gray-700 hover:bg-black hover:text-white transition-all duration-200">
+        dashboardAdmin
+    </a>
+@endif
+ @if ($user->role === 'vendor')
+    <a href="/vendor/dashboard" class="block px-4 py-1 text-[12px] text-gray-700 hover:bg-black hover:text-white transition-all duration-200">
+        dashboardvender
+    </a>
+     
+@endif
+           @if ($user->role === 'customer')
+             <a href="#" class="block px-4 py-1 text-[12px] text-gray-700 hover:bg-black hover:text-white transition-all duration-200">
                     MY ORDERS
                 </a>
+<a href="{{ route('vendors-requests.create') }}" class="block px-4 py-1 text-[12px] text-blue-600 hover:bg-gray-100 transition-all duration-200 uppercase font-bold">
+    Sell on NOVA
+</a>
+@endif
 
                 <div class="border-t border-gray-50 my-1"></div>
 
@@ -165,10 +182,10 @@
             @endauth
 
             <div class="border-t border-gray-50 my-1"></div>
-            
+<!--             
             <a href="{{ route('vendors-requests.create') }}" class="block px-4 py-1 text-[12px] text-blue-600 hover:bg-gray-100 transition-all duration-200 uppercase font-bold">
     Sell on NOVA
-</a>
+</a> -->
         </div>
     </div>
 </div>
