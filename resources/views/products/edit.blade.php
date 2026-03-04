@@ -93,8 +93,8 @@
                         </div>
                         <div class="col-md-3">
                             <label>SKU</label>
-                            <input type="text" name="variants[{{ $index }}][sku]" class="form-control" 
-                                value="{{ old("variants.$index.sku", $variant->SKU) }}" required>
+                            <input type="text" name="variants[{{ $index }}][SKU]" class="form-control" 
+                                value="{{ old("variants.$index.SKU", $variant->SKU) }}" required>
                         </div>
                     </div>
                 </div>

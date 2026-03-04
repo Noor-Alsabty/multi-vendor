@@ -35,12 +35,19 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 
     Route::get('/vendor/dashboard', [VendorController::class, 'index'])->name('vendor.dashboard');
     Route::controller(ProductController::class)->group(function () {
-        Route::get('/products/create', 'create')->name('products.create');
         Route::get('/products',  'index')->name('products.index');
+        Route::get('/products/create', 'create')->name('products.create');
         Route::post('/products/store', 'store')->name('products.store');
-        Route::put('/products/update/{id}', 'update')->name('products.update');
-        Route::get('/products/edit/{id}',  'edit')->name('products.edit');
-        Route::delete('/products/destroy/{id}', 'destroy')->name('products.destroy');
+        Route::put('/products/update/{product}', 'update')->name('products.update');
+        Route::get('/products/edit/{product}',  'edit')->name('products.edit');
+        Route::delete('/products/destroy/{product}', 'destroy')->name('products.destroy');
+        Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
+        // Route::get('/products/create', 'create')->name('products.create');
+        // Route::get('/products',  'index')->name('products.index');
+        // Route::post('/products/store', 'store')->name('products.store');
+        // Route::put('/products/update/{id}', 'update')->name('products.update');
+        // Route::get('/products/edit/{id}',  'edit')->name('products.edit');
+        // Route::delete('/products/destroy/{id}', 'destroy')->name('products.destroy');
     });
 });
 
@@ -64,14 +71,14 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/vendors-requests/create', [VendorsRequestController::class, 'create'])->name('vendors-requests.create');
     Route::post('/vendors-requests/store', [VendorsRequestController::class, 'store'])->name('vendors-requests.store');
 
-    Route::controller(ProductController::class)->group(function () {
+    // Route::controller(ProductController::class)->group(function () {
 
-        Route::get('/products',  'index')->name('products.index');
-        /*   Route::get('/products/create', 'create')->name('products.create');
-        Route::post('/products/store', 'store')->name('products.store');
-        Route::put('/products/update/{product}', 'update')->name('products.update');
-        Route::get('/products/edit/{product}',  'edit')->name('products.edit');
-        Route::delete('/products/destroy/{product}', 'destroy')->name('products.destroy');
-        Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');*/
-    });
+    //     Route::get('/products',  'index')->name('products.index');
+    //     /*   Route::get('/products/create', 'create')->name('products.create');
+    //     Route::post('/products/store', 'store')->name('products.store');
+    //     Route::put('/products/update/{product}', 'update')->name('products.update');
+    //     Route::get('/products/edit/{product}',  'edit')->name('products.edit');
+    //     Route::delete('/products/destroy/{product}', 'destroy')->name('products.destroy');
+    //     Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');*/
+    // });
 });
