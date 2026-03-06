@@ -164,4 +164,24 @@ class ProductController extends Controller
 
         return redirect()->route('products.index');
     }
+    // 
+     public function ind(Request $request)
+    {
+        $query = Product::with(['vendor', 'category']);
+
+        if ($request->query('status') === 'inactive') {
+            // اجلب فقط غير النشط
+            $products = $query->where('is_active', false)->get();
+        } else {
+            // اجلب فقط النشط
+            $products = $query->where('is_active', true)->get();
+        }
+$user = auth()->user();
+// dd($products);
+return view('welcome', [
+    'user' => $user,
+    'products' => $products
+]);
+
+    }
 }

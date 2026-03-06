@@ -9,10 +9,8 @@ use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VendorsRequestController;
 
-Route::get('/', function () {  $user = auth()->user();
-    return view('welcome', [
-        'user' => $user]);
-});
+// git
+        Route::get('/', [ProductController::class, 'ind'])->name('pro.ind');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
