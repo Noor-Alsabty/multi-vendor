@@ -15,6 +15,9 @@ protected $fillable = [
     {
         return $this->belongsTo(Vendor::class);
     }
-
+public function transactions()
+{
+    return $this->hasMany(Transaction::class);
+}
 
 }
