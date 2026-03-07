@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class WalletController extends Controller
 {
@@ -36,7 +37,7 @@ class WalletController extends Controller
      */
     public function show(Wallet $wallet)
     {
-        //
+        Gate::authorize('view', $wallet);
     }
 
     /**
@@ -52,7 +53,10 @@ class WalletController extends Controller
      */
     public function update(Request $request, Wallet $wallet)
     {
-        //
+        Gate::authorize('update', $wallet);
+        $wallet->update([
+        'balance' => $request->balance
+    ]);
     }
 
     /**
