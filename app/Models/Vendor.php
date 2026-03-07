@@ -40,7 +40,7 @@ protected $fillable = [
 
 public function wallet()
 {
-    return $this->hasOne(Wallet::class);
+    return $this->hasOne(Wallet::class, 'vendor_id');
 }
 
 public function documents()
