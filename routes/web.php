@@ -41,18 +41,12 @@ Route::middleware(['auth', 'vendor'])->group(function () {
         Route::get('/products/edit/{product}',  'edit')->name('products.edit');
         Route::delete('/products/destroy/{product}', 'destroy')->name('products.destroy');
         Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
-        // Route::get('/products/create', 'create')->name('products.create');
-        // Route::get('/products',  'index')->name('products.index');
-        // Route::post('/products/store', 'store')->name('products.store');
-        // Route::put('/products/update/{id}', 'update')->name('products.update');
-        // Route::get('/products/edit/{id}',  'edit')->name('products.edit');
-        // Route::delete('/products/destroy/{id}', 'destroy')->name('products.destroy');
     });
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('admin.index');
-
+    Route::get('/admin/vendors', [AdminController::class, 'allVendors'])->name('vendors.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');

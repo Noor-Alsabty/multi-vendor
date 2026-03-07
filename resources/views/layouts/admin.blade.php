@@ -97,6 +97,7 @@
         <div class="sidebar-brand">Admin PANEL</div>
 
         <a href="{{ route('admin.index') }}"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="{{ route('vendors.index') }}"><i class="fas fa-users"></i> All Vendors</a>
         <a href="{{ route('vendors-requests.indexAdmin') }}"><i class="bi bi-person-workspace me-2"></i>Vendors
             Requests</a>
 
@@ -107,12 +108,6 @@
 
         <div class="sidebar-section">Orders & Shipping</div>
         <a href="#"><i class="fas fa-shopping-cart"></i> vendor Orders</a>
-        <!-- <a href="#"><i class="fas fa-truck"></i> Shipping Details</a> -->
-
-        <!-- <div class="sidebar-section">Financials</div>
-        <a href="#"><i class="fas fa-wallet"></i> My Wallet</a>
-        <a href="#"><i class="fas fa-hand-holding-usd"></i> Withdrawal Requests</a> -->
-
         <div style="margin-top: 50px;">
             <a href="#" class="text-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
