@@ -22,6 +22,10 @@ class AdminController extends Controller
         $user->role = 'vendor';
         $user->status = 'active';
         $user->save();
+        
+        $user->wallet()->create([
+        'balance' => 0,
+    ]);
         return redirect()->route('vendors-requests.indexAdmin');
     }
     public function reject(Request $request, $id)

@@ -31,9 +31,7 @@ class VendorsRequestController extends Controller
             'store_phone' => 'required|string|max:10',
             'store_logo' => 'required|string|max:255',
             'description' =>   'required|string|max:1000',
-
         ]);
-
         VendorsRequest::create([
             'user_id'     => Auth::id(),
             'store_name' => $request->store_name,
