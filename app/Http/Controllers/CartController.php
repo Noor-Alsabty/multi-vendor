@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $cart = Auth::user()->cart;
+        $items = $cart ?
+            $cart->items()->with('variant.product')->get() : collect();
+
+        return view('carts.index', compact('items'));
     }
 
     /**

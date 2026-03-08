@@ -47,19 +47,22 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3>All Products</h3>
+
             <a href="{{ route('products.create') }}" class="btn btn-primary">+ Add New Product</a>
+
+
         </div>
 
         <div class="card p-4">
             <div class="table-responsive">
                 <div class="mb-4 d-flex gap-2">
-                    <a href="{{ route('products.index') }}" 
-                       class="btn {{ request('status') != 'inactive' ? 'btn-success' : 'btn-outline-success' }}">
-                        Active 
+                    <a href="{{ route('products.index') }}"
+                        class="btn {{ request('status') != 'inactive' ? 'btn-success' : 'btn-outline-success' }}">
+                        Active
                     </a>
 
-                    <a href="{{ route('products.index', ['status' => 'inactive']) }}" 
-                       class="btn {{ request('status') == 'inactive' ? 'btn-secondary' : 'btn-outline-secondary' }}">
+                    <a href="{{ route('products.index', ['status' => 'inactive']) }}"
+                        class="btn {{ request('status') == 'inactive' ? 'btn-secondary' : 'btn-outline-secondary' }}">
                         Inactive
                     </a>
                 </div>
@@ -89,42 +92,50 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->price }} $</td>
                                 <td>{{ $product->views }}</td>
-<td>
-    @if($product->images->count())
-        @foreach($product->images as $image)
-            <img src="{{ asset('storage/' . $image->image_url) }}" alt="{{ $product->name }}" width="50">
-        @endforeach
-    @else
-        <span>No Image</span>
-    @endif
-</td>
+                                <td>
+                                    @if ($product->images->count())
+                                        @foreach ($product->images as $image)
+                                            <img src="{{ asset('storage/' . $image->image_url) }}"
+                                                alt="{{ $product->name }}" width="50">
+                                        @endforeach
+                                    @else
+                                        <span>No Image</span>
+                                    @endif
+                                </td>
 
                                 <td>
-                                    @if($product->is_active)
-                                        <span class="badge bg-success-subtle text-success border border-success">Active</span>
+                                    @if ($product->is_active)
+                                        <span
+                                            class="badge bg-success-subtle text-success border border-success">Active</span>
                                     @else
-                                        <span class="badge bg-danger-subtle text-danger border border-danger">Inactive</span>
+                                        <span
+                                            class="badge bg-danger-subtle text-danger border border-danger">Inactive</span>
                                     @endif
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a class="btn btn-sm btn-warning" href="{{ route('products.edit', $product->id) }}">Edit</a>
+                                        <a class="btn btn-sm btn-warning"
+                                            href="{{ route('products.edit', $product->id) }}">Edit</a>
 
-                                        @if($product->is_active)
-                                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to hide this product?')">
+                                        @if ($product->is_active)
+                                            <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                                onsubmit="return confirm('Are you sure you want to hide this product?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">Hide</button>
+                                                <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger">Hide</button>
                                             </form>
                                         @else
-                                            <form action="{{ route('products.restore', $product->id) }}" method="POST">
+                                            <form action="{{ route('products.restore', $product->id) }}"
+                                                method="POST">
                                                 @csrf
-                                                <button type="submit" class="btn btn-sm btn-info text-white">Activate</button>
+                                                <button type="submit"
+                                                    class="btn btn-sm btn-info text-white">Activate</button>
                                             </form>
                                         @endif
                                     </div>
                                 </td>
-            
+
                             </tr>
                         @endforeach
                     </tbody>
