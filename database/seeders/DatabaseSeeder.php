@@ -23,11 +23,11 @@ class DatabaseSeeder extends Seeder
         // 1. إنشاء المستخدمين (زبائن ومدراء)
         $customers = User::factory(10)->create(['role' => 'customer']);
         User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@test.com',
-            'role' => 'admin'
-        ]);
-
+    'name' => 'Admin',
+    'email' => 'admin@store.com',
+    'password' => bcrypt('password123'), // تشفير كلمة السر ضروري
+    'role' => 'admin', // رقم الأدمن في نظامك
+]);
         // 2. إنشاء الأصناف (Categories)
         $categories = Category::factory(10)->create();
 

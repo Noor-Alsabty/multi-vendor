@@ -13,15 +13,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\WelcomeController;
 
-/*function () {
-    $user = Auth::user();
-    return view('welcome', [
-        'user' => $user
-    ]);
-}*/
-
-
-Route::get('/', [WelcomeController::class, 'index']);
+// git
+        Route::get('/', [ProductController::class, 'ind'])->name('pro.ind');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -57,7 +50,7 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('admin.index');
-
+    Route::get('/admin/vendors', [AdminController::class, 'allVendors'])->name('vendors.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
