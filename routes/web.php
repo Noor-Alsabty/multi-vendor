@@ -7,6 +7,7 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\VendorsRequestController;
 
 // git
@@ -27,6 +28,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', function () {
         return view('carts.cart');
     })->name('cart');
+    Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/payment/cancel', function() {
+        return redirect()->back()->with('error', 'تم إلغاء الدفع');
+    })->name('payment.cancel');
 });
 
 require __DIR__ . '/auth.php';

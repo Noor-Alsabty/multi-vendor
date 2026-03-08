@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained();
-             $table->string('card_number_masked'); 
-             $table->string('card_holder_name');
-             $table->decimal('amount',10,2);
-             $table->string('status');
-             $table->timestamp('payment_date');
+            $table->string('card_number_masked'); 
+            $table->string('card_holder_name');
+            $table->decimal('amount',10,2);
+            $table->string('status');
+            $table->timestamp('payment_date');
             $table->timestamps();
         });
     }
