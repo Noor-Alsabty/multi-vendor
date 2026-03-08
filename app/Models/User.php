@@ -47,11 +47,11 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'customer_id');
     }
 
-    
-public function carts()
-{
-    return $this->hasOne(Cart::class);
-}
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
 
 
 

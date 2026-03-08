@@ -8,11 +8,20 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VendorsRequestController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\WelcomeController;
 
-Route::get('/', function () {  $user = auth()->user();
+/*function () {
+    $user = Auth::user();
     return view('welcome', [
-        'user' => $user]);
-});
+        'user' => $user
+    ]);
+}*/
+
+
+Route::get('/', [WelcomeController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -26,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/cart', function () {
+    Route::get('/carts', function () {
         return view('carts.cart');
     })->name('cart');
 });
@@ -43,12 +52,6 @@ Route::middleware(['auth', 'vendor'])->group(function () {
         Route::get('/products/edit/{product}',  'edit')->name('products.edit');
         Route::delete('/products/destroy/{product}', 'destroy')->name('products.destroy');
         Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
-        // Route::get('/products/create', 'create')->name('products.create');
-        // Route::get('/products',  'index')->name('products.index');
-        // Route::post('/products/store', 'store')->name('products.store');
-        // Route::put('/products/update/{id}', 'update')->name('products.update');
-        // Route::get('/products/edit/{id}',  'edit')->name('products.edit');
-        // Route::delete('/products/destroy/{id}', 'destroy')->name('products.destroy');
     });
 });
 
@@ -71,15 +74,10 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/vendors-requests/index', [VendorsRequestController::class, 'index'])->name('vendors-requests.index');
     Route::get('/vendors-requests/create', [VendorsRequestController::class, 'create'])->name('vendors-requests.create');
     Route::post('/vendors-requests/store', [VendorsRequestController::class, 'store'])->name('vendors-requests.store');
-
-    // Route::controller(ProductController::class)->group(function () {
-
-    //     Route::get('/products',  'index')->name('products.index');
-    //     /*   Route::get('/products/create', 'create')->name('products.create');
-    //     Route::post('/products/store', 'store')->name('products.store');
-    //     Route::put('/products/update/{product}', 'update')->name('products.update');
-    //     Route::get('/products/edit/{product}',  'edit')->name('products.edit');
-    //     Route::delete('/products/destroy/{product}', 'destroy')->name('products.destroy');
-    //     Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');*/
-    // });
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/products',  'index')->name('products.index');
+    });
+    Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
+    Route::post('/carts/store/{variant_id}', [CartItemController::class, 'store'])->name('carts.store');
+    Route::delete('/carts/item/{id}',  [CartItemController::class, 'destroy'])->name('carts.destroy');
 });
