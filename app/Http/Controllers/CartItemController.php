@@ -26,23 +26,29 @@ class CartItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store($variant_id)
+    public function store($variant_id, Request $request)
     {
-        $user = Auth::user();
-        $cart = $user->cart;
-        if (!$cart) {
-            $cart = Cart::firstOrCreate([
-                'user_id' => Auth::id()
-            ]);
-        }
-        $cart->items()->create([
-            'variant_id' => $variant_id,
-            'quantity' => 1
+        $quantity = $request->input('quantity');
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+        $cart = Cart::firstOrCreate([
+            'user_id' => Auth::id()
         ]);
 
-        return redirect()->back()->with('success', "added to cart");
-    }
+        $cartItem = $cart->items()->where('variant_id', $variant_id)->first();
 
+        if ($cartItem) {
+            $cartItem->increment('quantity',  $quantity);
+        } else {
+            $cart->items()->create([
+                'variant_id' => $variant_id,
+                'quantity' => $quantity
+            ]);
+        }
+
+        return redirect()->back()->with('success', "Added to cart");
+    }
     /**
      * Display the specified resource.
      */

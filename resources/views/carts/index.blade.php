@@ -45,10 +45,12 @@
                                             <h3 class="text-lg font-bold">Product Name:
                                                 {{ $item->variant->product->name }}</h3>
                                             <p class="text-sm text-gray-500 italic">Qty: {{ $item->quantity }}</p>
+                                            <p class="text-right font-bold text-xl">
+                                                {{ $item->variant->product->price * $item->quantity }}</p>
                                         </div>
                                     </div>
                                     <div class="text-right font-bold text-xl">
-                                        {{ $item->variant->product->price * $item->quantity }}
+
                                         <form action="{{ route('carts.destroy', $item->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
