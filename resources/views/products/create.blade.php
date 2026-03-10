@@ -30,9 +30,9 @@
                     <div class="mb-4">
                         <label class="form-label">Store Name</label>
                         <span class="static-display">
-                            {{ $vendors->first()->store_name ?? 'No Store Assigned' }}
-                        </span>
-                        <input type="hidden" name="vendor_id" value="{{ $vendors->first()->id ?? '' }}">
+                     {{auth()->user()->vendor->store_name ?? 'No Store Assigned' }}                        
+                    </span>
+                        <input type="hidden" name="vendor_id" value="{{ auth()->user()->vendor->id ?? '' }}">
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">

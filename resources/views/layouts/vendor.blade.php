@@ -29,7 +29,7 @@
     <div class="sidebar shadow">
         <div class="sidebar-brand">VENDOR PANEL</div>
         
-        <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="{{ route('vendor.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
 
         <div class="sidebar-section">Product Management</div>
         <a href="{{ route('products.index') }}"><i class="fas fa-box"></i> All Products</a>
@@ -44,7 +44,14 @@
         <a href="#"><i class="fas fa-hand-holding-usd"></i> Withdrawal Requests</a>
 
         <div style="margin-top: 50px;">
-            <a href="#" class="text-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+              <li> <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit"
+                                         class="dropdown-item text-danger"><i class="fas fa-power-off"></i>
+                                        Logout
+                                    </button>
+                                </form></li>
+            <!-- <a href="#" class="text-danger"><i class="fas fa-sign-out-alt"></i> Logout</a> -->
         </div>
     </div>
 
@@ -63,7 +70,14 @@
                     <li><a class="dropdown-item" href="#"><i class="fas fa-university"></i> Bank Account Info</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-power-off"></i> Logout</a></li>
+                       <li> <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit"
+                                         class="dropdown-item text-danger"><i class="fas fa-power-off"></i>
+                                        Logout
+                                    </button>
+                                </form></li>
+                    <!-- <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-power-off"></i> Logout</a></li> -->
                 </ul>
             </div>
         </nav>
