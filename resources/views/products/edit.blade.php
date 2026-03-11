@@ -29,7 +29,7 @@
                     <select name="vendor_id" class="form-control">
                         @foreach($vendors as $vendor)
                             <option value="{{ $vendor->id }}" {{ $product->vendor_id == $vendor->id ? 'selected' : '' }}>
-                                {{ $vendor->name }}
+                            {{auth()->user()->vendor->store_name ?? 'No Store Assigned' }}
                             </option>
                         @endforeach
                     </select>

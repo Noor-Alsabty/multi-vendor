@@ -94,6 +94,18 @@
                                 href="#">About</a></li>
                     </ul>
                 </nav>
+                <form method="GET" action="{{ route('product.indexsearch') }}" style="margin-bottom:20px; text-align:center;">
+    <input 
+        type="text"
+        name="search"
+        placeholder="ابحث عن منتج"
+        value="{{ request('search') }}"
+        style="padding:8px;width:250px"
+    >
+
+    <button type="submit">🔍</button>
+
+</form>
             </div>
 
             <div class="order-1 md:order-2">
@@ -523,8 +535,15 @@ Alternatively if you want to just have a single hero
                                         class="px-3 py-1 bg-gray-300 rounded">
                                         -
                                     </button>
-                                    <input type="number" name="quantity" value="1" min="1"
-                                        class="w-16 text-center border rounded">
+                                    <!-- <input type="number" name="quantity" value="1" min="1"
+                                        class="w-16 text-center border rounded"> -->
+      <input type="number" 
+       name="quantity" 
+       value="1" 
+       min="1" 
+       max="{{$product->variants->sum('stock')}}"
+       oninput="if(this.value > this.max) this.value = this.max"
+       class="w-16 text-center border rounded">{{$product->variants->sum('stock')}}
                                     <button type="button" onclick="this.previousElementSibling.stepUp()"
                                         class="px-3 py-1 bg-gray-300 rounded">
                                         +
@@ -640,30 +659,33 @@ Alternatively if you want to just have a single hero
         </div>
         </div>
     </footer>
-    <script>
-        //  والنقصان الزيادة لأزرار    //
-        function increaseQty(btn) {
-            let input = btn.parentElement.querySelector('input[name="quantity"]');
-            input.value = parseInt(input.value) + 1;
-        }
+ <script>
+//  والنقصان الزيادة لأزرار    // 
+function increaseQty(btn) {
+    let input = btn.parentElement.querySelector('input[name="quantity"]');
+    let max = parseInt(input.max);
 
-        function decreaseQty(btn) {
-            let input = btn.parentElement.querySelector('input[name="quantity"]');
-            if (input.value > 1) {
-                input.value = parseInt(input.value) - 1;
-            }
-        }
+    if (parseInt(input.value) < max) {
+        input.value = parseInt(input.value) + 1;
+    }
+}
 
-        function toggleHeart(el) {
-            if (el.classList.contains('text-red-500')) {
-                el.classList.remove('text-red-500');
-                el.classList.add('text-gray-500');
-            } else {
-                el.classList.remove('text-gray-500');
-                el.classList.add('text-red-500');
-            }
-        }
-    </script>
+function decreaseQty(btn) {
+    let input = btn.parentElement.querySelector('input[name="quantity"]');
+    if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+    }
+}
+function toggleHeart(el) { 
+    if (el.classList.contains('text-red-500')) {
+        el.classList.remove('text-red-500');
+        el.classList.add('text-gray-500');
+    } else {
+        el.classList.remove('text-gray-500');
+        el.classList.add('text-red-500');
+    }
+}
+</script>
 
 
 </body>

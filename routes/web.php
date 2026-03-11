@@ -13,7 +13,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\WelcomeController;
 
-// git
+Route::get('/search', [ProductController::class, 'indexsearch'])->name('product.indexsearch');
 Route::get('/', [ProductController::class, 'ind'])->name('pro.ind');
 
 Route::get('/dashboard', function () {
