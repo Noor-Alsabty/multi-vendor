@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\Vendor;
 use App\Models\Category;
 use App\Models\ProductVariant;
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -182,12 +184,15 @@ class ProductController extends Controller
             $products = $query->where('is_active', true)->get();
         }
 $user = auth()->user();
+$notifications = $user ? $user->notifications : collect();   
 // dd($products);
 return view('welcome', [
     'user' => $user,
-    'products' => $products
-]);
+    'products' => $products,
+    'notifications'=>$notifications
 
+]);
+    
     }
        public function indexsearch(Request $request)
 {

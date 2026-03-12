@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -11,7 +12,8 @@ class NotificationController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+    { $notifications=Auth::user()->notifications;
+    return view('welcome',compact('notifications'));
         //
     }
 

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
         .work-sans {
@@ -205,6 +206,7 @@
                                         Logout
                                     </button>
                                 </form>
+
                             @else
                                 <div class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
                                     Account</div>
@@ -219,8 +221,9 @@
                                     CREATE ACCOUNT
                                 </a>
                             @endauth
+                            
 
-                            <div class="border-t border-gray-50 my-1"></div>
+                        <div class="border-t border-gray-50 my-1"></div>
                             <!--
             <a href="{{ route('vendors-requests.create') }}" class="block px-4 py-1 text-[12px] text-blue-600 hover:bg-gray-100 transition-all duration-200 uppercase font-bold">
     Sell on NOVA
@@ -228,6 +231,32 @@
                         </div>
                     </div>
                 </div>
+                  @auth
+                                        <div class="nav-item dropdown">
+                                  <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown">
+                                     <i class="fas fa-bell me-2"></i>
+                                      <span class="badge">{{ count($notifications) }}</span>
+                                    </a>
+                                          <ul class="dropdown-menu dropdown-menu-end">
+                             <!-- Auth::user()-> -->
+                              @if(Auth::user()->notifications->count()>0)
+                            @foreach(Auth::user()->notifications as $notification)
+                              <li>
+                                <a href=>
+                                 <strong> {{$notification->title}} </strong>  
+                                 <p>{{$notification->message}}</p>
+                                    <span class="text-muted">{{$notification->created_at->diffForHumans()}}</span>
+                                    <span class="text-muted">{{$notification->status}}</span>
+
+                                </a>
+                              </li>
+                              @endforeach
+                              @else
+                            <li class="dropdown-item">no notification</li>  
+                            @endif
+                        </ul>
+                              </div>
+                               @endauth
                 <a class="pl-3 inline-block no-underline hover:text-black relative shake-it"
                     href="{{ Auth::check() ? url('/carts') : url('/empty-cart') }}">
 
