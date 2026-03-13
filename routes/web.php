@@ -11,6 +11,7 @@ use App\Http\Controllers\VendorsRequestController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\WelcomeController;
 
 Route::get('/search', [ProductController::class, 'indexsearch'])->name('product.indexsearch');
@@ -44,6 +45,7 @@ Route::middleware(['auth', 'vendor'])->group(function () {
         Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
     });
 });
+Route::get('/notification/read/{notification_id}',[NotificationController::class,'read'])->name('notification.read');
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('admin.index');

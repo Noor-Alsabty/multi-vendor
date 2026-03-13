@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
-use Illuminate\Container\Attributes\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -15,6 +15,19 @@ class NotificationController extends Controller
     { $notifications=Auth::user()->notifications;
     return view('welcome',compact('notifications'));
         //
+    }
+    public function read($notification_id){
+    $notification=Notification::find($notification_id);
+    if($notification->status == "unread"){
+    $notification->status="read";
+    $notification->save();}
+    // return redirect()->back()->with('success','notification marked as read');
+      if (Auth::user()->role == 'admin') {
+        return redirect()->route('vendors-requests.indexAdmin');
+    } else {
+        return redirect()->route('vendor.dashboard');
+    }
+
     }
 
     /**
