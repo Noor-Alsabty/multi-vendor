@@ -241,16 +241,33 @@
                              <!-- Auth::user()-> -->
                               @if(Auth::user()->notifications->count()>0)
                             @foreach(Auth::user()->notifications as $notification)
-                              <li>
-                                <a href=>
-                                 <strong> {{$notification->title}} </strong>  
+                                 @if($notification->status=="unread")
+                                 <li>
+                                <a  class="dropdown-item"href="{{route('notification.read',$notification->id)}}">
+                                    <i class="fas fa-eye-slash text-danger  me-2"></i>
+                                        <strong> {{$notification->title}} </strong>  
                                  <p>{{$notification->message}}</p>
                                     <span class="text-muted">{{$notification->created_at->diffForHumans()}}</span>
                                     <span class="text-muted">{{$notification->status}}</span>
-
                                 </a>
-                              </li>
-                              @endforeach
+
+                                </li>
+                                 @endif
+                             @if($notification->status=="read")
+                             <li>
+                                <a  class="dropdown-item" href="{{route('notification.read',$notification->id)}}">
+                                    <i class="fas fa-eye text-primary  me-2"></i>
+                                        <strong> {{$notification->title}} </strong>  
+                                 <p>{{$notification->message}}</p>
+                                    <span class="text-muted">{{$notification->created_at->diffForHumans()}}</span>
+                                    <span class="text-muted">{{$notification->status}}</span>
+                                </a>
+
+                             </li>
+                             @endif
+                            @endforeach
+                          
+                           
                               @else
                             <li class="dropdown-item">no notification</li>  
                             @endif
