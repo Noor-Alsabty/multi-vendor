@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\VendorsRequest;
+use App\Models\Notification;
+use App\Models\User;
+
 
 
 class VendorsRequestController extends Controller
@@ -40,7 +43,19 @@ class VendorsRequestController extends Controller
             'store_logo' => $request->store_logo,
             'description' => $request->description,
             'status' => 'pending',
-        ]);
+        ]);    
+    // $admin = User::where('role', 'admin')->first();
+
+    // إنشاء إشعار للأدمن
+   $admins = User::where('role', 'admin')->get();
+
+foreach ($admins as $admin) {
+    Notification::create([
+        'user_id' => $admin->id,
+        'title' => ' New Store Request',
+        'message' => ' The user has requested to create a store: ' . $request->store_name,
+    ]);}
+      
         return redirect()->route('vendors-requests.index');
     }
 }

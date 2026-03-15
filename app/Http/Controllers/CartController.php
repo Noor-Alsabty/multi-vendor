@@ -11,6 +11,7 @@ class CartController extends Controller
 {
     public function index()
     {
+
         $cart = Auth::user()->cart;
         $items = $cart ?
             $cart->items()->with('variant.product')->get() : collect();
@@ -18,9 +19,6 @@ class CartController extends Controller
         return view('carts.index', compact('items'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //

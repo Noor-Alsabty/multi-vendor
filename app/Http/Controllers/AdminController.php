@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vendor;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\VendorsRequest;
 
@@ -27,8 +28,18 @@ class AdminController extends Controller
         ['user_id' => $user->id],
         ['store_name' => $vendorsRequest->store_name]
     );
-        $vendor->wallet()->create(['balance' => 0]);
-        return redirect()->route('vendors-requests.indexAdmin');
+        $vendor->wallet()->create(['balance' => 0]); 
+     
+    // 🔔    إرسال إشعار للبائع بقبول المتجر
+        $notification= new  Notification();
+    $notification->user_id = $user->id;
+        $notification->title=" store  approved";
+    
+        // $notification->message="your store ".$vendorsRequest->store_name. " has been approved";
+        $notification->message = "Your store {$vendorsRequest->store_name} has been approved";
+
+        $notification->save();
+return redirect()->route('vendors-requests.indexAdmin');
     }
     public function reject(Request $request, $id)
     {

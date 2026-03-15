@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
         .work-sans {
@@ -94,6 +95,18 @@
                                 href="#">About</a></li>
                     </ul>
                 </nav>
+                <form method="GET" action="{{ route('product.indexsearch') }}" style="margin-bottom:20px; text-align:center;">
+    <input 
+        type="text"
+        name="search"
+        placeholder="ابحث عن منتج"
+        value="{{ request('search') }}"
+        style="padding:8px;width:250px"
+    >
+
+    <button type="submit">🔍</button>
+
+</form>
             </div>
 
             <div class="order-1 md:order-2">
@@ -193,6 +206,7 @@
                                         Logout
                                     </button>
                                 </form>
+
                             @else
                                 <div class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
                                     Account</div>
@@ -207,8 +221,9 @@
                                     CREATE ACCOUNT
                                 </a>
                             @endauth
+                            
 
-                            <div class="border-t border-gray-50 my-1"></div>
+                        <div class="border-t border-gray-50 my-1"></div>
                             <!--
             <a href="{{ route('vendors-requests.create') }}" class="block px-4 py-1 text-[12px] text-blue-600 hover:bg-gray-100 transition-all duration-200 uppercase font-bold">
     Sell on NOVA
@@ -216,6 +231,49 @@
                         </div>
                     </div>
                 </div>
+                  @auth
+                                        <div class="nav-item dropdown">
+                                  <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown">
+                                     <i class="fas fa-bell me-2"></i>
+                                      <span class="badge">{{ count($notifications) }}</span>
+                                    </a>
+                                          <ul class="dropdown-menu dropdown-menu-end">
+                             <!-- Auth::user()-> -->
+                              @if(Auth::user()->notifications->count()>0)
+                            @foreach(Auth::user()->notifications as $notification)
+                                 @if($notification->status=="unread")
+                                 <li>
+                                <a  class="dropdown-item"href="{{route('notification.read',$notification->id)}}">
+                                    <i class="fas fa-eye-slash text-danger  me-2"></i>
+                                        <strong> {{$notification->title}} </strong>  
+                                 <p>{{$notification->message}}</p>
+                                    <span class="text-muted">{{$notification->created_at->diffForHumans()}}</span>
+                                    <span class="text-muted">{{$notification->status}}</span>
+                                </a>
+
+                                </li>
+                                 @endif
+                             @if($notification->status=="read")
+                             <li>
+                                <a  class="dropdown-item" href="{{route('notification.read',$notification->id)}}">
+                                    <i class="fas fa-eye text-primary  me-2"></i>
+                                        <strong> {{$notification->title}} </strong>  
+                                 <p>{{$notification->message}}</p>
+                                    <span class="text-muted">{{$notification->created_at->diffForHumans()}}</span>
+                                    <span class="text-muted">{{$notification->status}}</span>
+                                </a>
+
+                             </li>
+                             @endif
+                            @endforeach
+                          
+                           
+                              @else
+                            <li class="dropdown-item">no notification</li>  
+                            @endif
+                        </ul>
+                              </div>
+                               @endauth
                 <a class="pl-3 inline-block no-underline hover:text-black relative shake-it"
                     href="{{ Auth::check() ? url('/carts') : url('/empty-cart') }}">
 
@@ -386,7 +444,7 @@ Alternatively if you want to just have a single hero
                     </div>
                 </div>
             </nav>
-<!-- 
+            <!--
             <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
                 <a href="#">
                     <img class="hover:grow hover:shadow-lg" src="https://images.unsplash.com/photo-1555982105-d25af4182e4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&h=400&q=80">
@@ -490,59 +548,74 @@ Alternatively if you want to just have a single hero
                     <p class="pt-1 text-gray-900">£9.99</p>
                 </a>
             </div> -->
-     @if(isset($products) && $products->count())
-    @foreach ($products as $product)
-        <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
-            <a href="#">
-                @if($product->images->count())
-                    <img class="hover:grow hover:shadow-lg" 
-                         src="{{ asset('storage/' . $product->images->first()->image_url) }}" 
-                         alt="{{ $product->name }}">
-                @endif
+            @if (isset($products) && $products->count())
+                @foreach ($products as $product)
+                    <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+                        <a href="#">
+                            @if ($product->images->count())
+                                <img class="hover:grow hover:shadow-lg"
+                                    src="{{ asset('storage/' . $product->images->first()->image_url) }}"
+                                    alt="{{ $product->name }}">
+                            @endif
 
-                <div class="pt-3 flex items-center justify-between">
-                    <p>{{ $product->name }}</p>
-                    <svg class="h-6 w-6 fill-current text-gray-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"onclick="toggleHeart(this)" >
-                        <path d="M12,4.595c-1.104-1.006-2.512-1.558-3.996-1.558c-1.578,0-3.072,0.623-4.213,1.758c-2.353,2.363-2.352,6.059,0.002,8.412 l7.332,7.332c0.17,0.299,0.498,0.492,0.875,0.492c0.322,0,0.609-0.163,0.792-0.409l7.415-7.415 c2.354-2.354,2.354-6.049-0.002-8.416c-1.137-1.131-2.631-1.754-4.209-1.754C14.513,3.037,13.104,3.589,12,4.595z M18.791,6.205 c1.563,1.571,1.564,4.025,0.002,5.588L12,18.586l-6.793-6.793C3.645,10.23,3.646,7.776,5.205,6.209 c0.76-0.756,1.754-1.172,2.799-1.172s2.035,0.416,2.789,1.17l0.5,0.5c0.391,0.391,1.023,0.391,1.414,0l0.5-0.5 C14.719,4.698,17.281,4.702,18.791,6.205z" />
-                    </svg>
-                </div>
+                            <div class="pt-3 flex items-center justify-between">
+                                <p>{{ $product->name }}</p>
+                                <svg class="h-6 w-6 fill-current text-gray-500 hover:text-black"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"onclick="toggleHeart(this)">
+                                    <path
+                                        d="M12,4.595c-1.104-1.006-2.512-1.558-3.996-1.558c-1.578,0-3.072,0.623-4.213,1.758c-2.353,2.363-2.352,6.059,0.002,8.412 l7.332,7.332c0.17,0.299,0.498,0.492,0.875,0.492c0.322,0,0.609-0.163,0.792-0.409l7.415-7.415 c2.354-2.354,2.354-6.049-0.002-8.416c-1.137-1.131-2.631-1.754-4.209-1.754C14.513,3.037,13.104,3.589,12,4.595z M18.791,6.205 c1.563,1.571,1.564,4.025,0.002,5.588L12,18.586l-6.793-6.793C3.645,10.23,3.646,7.776,5.205,6.209 c0.76-0.756,1.754-1.172,2.799-1.172s2.035,0.416,2.789,1.17l0.5,0.5c0.391,0.391,1.023,0.391,1.414,0l0.5-0.5 C14.719,4.698,17.281,4.702,18.791,6.205z" />
+                                </svg>
+                            </div>
 
-                <p class="pt-1 text-gray-900">£{{ $product->price }}</p>
-            </a>
-                 <form action="" method="POST" class="mt-2">
-                @csrf
-                
-    <!-- حقل الكمية -->
-     <div>
-            <!-- زر زيادة -->
-    <button type="button" onclick="increaseQty(this)" 
-        class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">
-        +
-    </button>
-    <input type="number" name="quantity" value="1" min="1"
-        class="w-16 text-center border rounded">
+                            <p class="pt-1 text-gray-900">£{{ $product->price }}</p>
+                        </a>
+                        <div class="mt-2">
+                            <form class="mt-2"
+                                action="{{ route('carts.store', $product->variants->first()->id) }}"method="POST">
+                                @csrf
+
+                                <!-- حقل الكمية -->
+                                <div class="flex items-center gap-2">
+                                    <!-- زر زيادة -->
+                                    <button type="button" onclick="this.nextElementSibling.stepDown()"
+                                        class="px-3 py-1 bg-gray-300 rounded">
+                                        -
+                                    </button>
+                                    <!-- <input type="number" name="quantity" value="1" min="1"
+                                        class="w-16 text-center border rounded"> -->
+      <input type="number" 
+       name="quantity" 
+       value="1" 
+       min="1" 
+       max="{{$product->variants->sum('stock')}}"
+       oninput="if(this.value > this.max) this.value = this.max"
+       class="w-16 text-center border rounded">{{$product->variants->sum('stock')}}
+                                    <button type="button" onclick="this.previousElementSibling.stepUp()"
+                                        class="px-3 py-1 bg-gray-300 rounded">
+                                        +
+                                    </button>
+
+                                </div>
+                                <br>
+                                <div>
+
+                                    <button type="submit"
+                                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                                        class="btn btn-info mt-2">
+                                        Add to cart</button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <p>لا توجد منتجات لعرضها</p>
+            @endif
 
 
-      <button type="button" onclick="decreaseQty(this)" 
-        class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">
-        -
-    </button>
-    </div>
-    <br>
-              <div><button type="submit"  class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" class="btn btn-info mt-2" >
-                    إضافة للسلة
-                </button>
-              </div>  
-            </form>
+            <!--  -->
         </div>
-    @endforeach
-@else
-    <p>لا توجد منتجات لعرضها</p>
-@endif
-
-
-<!--  -->
-            </div>
         </div>
     </section>
 
@@ -628,24 +701,28 @@ Alternatively if you want to just have a single hero
                 </div>
             </div>
         </div>
-      </div>
-    </div>
-  </div>
-</footer>
-<script>
+        </div>
+        </div>
+        </div>
+    </footer>
+ <script>
 //  والنقصان الزيادة لأزرار    // 
 function increaseQty(btn) {
     let input = btn.parentElement.querySelector('input[name="quantity"]');
-    input.value = parseInt(input.value) + 1;
+    let max = parseInt(input.max);
+
+    if (parseInt(input.value) < max) {
+        input.value = parseInt(input.value) + 1;
+    }
 }
 
 function decreaseQty(btn) {
     let input = btn.parentElement.querySelector('input[name="quantity"]');
-    if (input.value > 1) {
+    if (parseInt(input.value) > 1) {
         input.value = parseInt(input.value) - 1;
     }
 }
-function toggleHeart(el) {
+function toggleHeart(el) { 
     if (el.classList.contains('text-red-500')) {
         el.classList.remove('text-red-500');
         el.classList.add('text-gray-500');
@@ -654,8 +731,6 @@ function toggleHeart(el) {
         el.classList.add('text-red-500');
     }
 }
-
-
 </script>
 
 
