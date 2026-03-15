@@ -183,6 +183,7 @@ class ProductController extends Controller
             // اجلب فقط النشط
             $products = $query->where('is_active', true)->get();
         }
+        
 $user = auth()->user();
 $notifications = $user ? $user->notifications : collect();   
 // dd($products);
@@ -194,7 +195,7 @@ return view('welcome', [
 ]);
     
     }
-       public function indexsearch(Request $request)
+    public function indexsearch(Request $request)
 {
     $query = Product::with(['vendor','category']);
 
