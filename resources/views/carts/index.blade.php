@@ -45,8 +45,12 @@
                                             <h3 class="text-lg font-bold">Product Name:
                                                 {{ $item->variant->product->name }}</h3>
                                             <p class="text-sm text-gray-500 italic">Qty: {{ $item->quantity }}</p>
+                                            @php
+                                                $variantPrice = data_get($item, 'variant.price');
+                                                $unitPrice = $variantPrice ?: data_get($item, 'variant.product.price', 0);
+                                            @endphp
                                             <p class="text-right font-bold text-xl">
-                                                {{ $item->variant->product->price * $item->quantity }}</p>
+                                                {{ $unitPrice * $item->quantity }}</p>
                                         </div>
                                     </div>
                                     <div class="text-right font-bold text-xl">
@@ -60,7 +64,9 @@
 
                                 </div>
                                 @php
-                                    $total += $item->variant->product->price * $item->quantity;
+                                    $variantPrice = data_get($item, 'variant.price');
+                                    $unitPrice = $variantPrice ?: data_get($item, 'variant.product.price', 0);
+                                    $total += $unitPrice * $item->quantity;
                                 @endphp
                             @endforeach
 
@@ -76,11 +82,10 @@
                                         <span>Total</span>
                                         <span>${{ $total }}</span>
                                     </div>
-                                    <a href="#">
-                                        <button
-                                            class="w-full bg-black py-4 rounded-full text-white font-bold uppercase tracking-widest hover:bg-gray-800 transition-all shadow-xl"
-                                            type="submit">Checkout
-                                        </button></a>
+                                    <a href="{{ route('checkout.show') }}"
+                                        class="inline-flex w-full items-center justify-center bg-black py-4 rounded-full text-white font-bold uppercase tracking-widest hover:bg-gray-800 transition-all shadow-xl">
+                                        Checkout
+                                    </a>
                                 </div>
                             </div>
                         @else

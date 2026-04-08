@@ -11,7 +11,10 @@ class AdminController extends Controller
 {
     public function indexAdmin()
     {
-        $vendorsRequests = VendorsRequest::where('status', 'pending')->get();
+        $vendorsRequests = VendorsRequest::with('user')
+            ->where('status', 'pending')
+            ->latest()
+            ->get();
         return view('vendors-requests.indexAdmin', compact('vendorsRequests'));
     }
     public function verify($id)
@@ -28,14 +31,16 @@ class AdminController extends Controller
         ['user_id' => $user->id],
         ['store_name' => $vendorsRequest->store_name]
     );
-        $vendor->wallet()->create(['balance' => 0]); 
-     
+        $vendor->wallet()->firstOrCreate(
+    ['vendor_id' => $vendor->id], // ابحث عن محفظة لهذا البائع
+    ['balance' => 0]              // إذا لم تجد، أنشئ واحدة برصيد صفر
+);
+    
     // 🔔    إرسال إشعار للبائع بقبول المتجر
         $notification= new  Notification();
     $notification->user_id = $user->id;
         $notification->title=" store  approved";
     
-        // $notification->message="your store ".$vendorsRequest->store_name. " has been approved";
         $notification->message = "Your store {$vendorsRequest->store_name} has been approved";
 
         $notification->save();
@@ -53,7 +58,6 @@ return redirect()->route('vendors-requests.indexAdmin');
 public function allVendors()
 {
     $vendors = Vendor::with('wallet')->latest()->get();
-    // عرض صفحة الأدمن (تأكدي من وجود الملف في resources/views/admin/vendors.blade.php)
     return view('vendors.index', compact('vendors'));
 }
 }

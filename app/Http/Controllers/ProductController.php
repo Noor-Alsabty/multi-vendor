@@ -11,7 +11,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 class ProductController extends Controller
 {
     /**
@@ -185,7 +184,7 @@ class ProductController extends Controller
             $products = $query->where('is_active', true)->get();
         }
         
-$user = auth()->user();
+$user = Auth::user();
 $notifications = $user ? $user->notifications : collect();   
 // dd($products);
 return view('welcome', [
@@ -206,7 +205,7 @@ return view('welcome', [
     }
 
     $products = $query->get();
-$user = auth()->user();
+$user = Auth::user();
 
     return view('welcome', [
     'user' => $user,
