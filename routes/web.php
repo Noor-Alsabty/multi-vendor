@@ -7,11 +7,13 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\VendorsRequestController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WelcomeController;
 
 Route::get('/search', [ProductController::class, 'indexsearch'])->name('product.indexsearch');
@@ -43,6 +45,7 @@ Route::middleware(['auth', 'vendor'])->group(function () {
         Route::get('/products/edit/{product}',  'edit')->name('products.edit');
         Route::delete('/products/destroy/{product}', 'destroy')->name('products.destroy');
         Route::post('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
+        Route::get('/my-wallet', [WalletController::class, 'index'])->name('vendor.wallet');
     });
 });
 Route::get('/notification/read/{notification_id}',[NotificationController::class,'read'])->name('notification.read');
@@ -72,4 +75,13 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
     Route::post('/carts/store/{variant_id}', [CartItemController::class, 'store'])->name('carts.store');
     Route::delete('/carts/item/{id}',  [CartItemController::class, 'destroy'])->name('carts.destroy');
+    
+    Route::get('/checkout', [PaymentController::class, 'showCheckoutPage'])->name('checkout.show');
+
+// 2. إرسال البيانات إلى Stripe 
+Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+
+// 3. روابط العودة
+Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
 });

@@ -14,12 +14,38 @@ use App\Models\Payment;
 use App\Models\Shippment;
 use App\Models\VendorDocument;
 use App\Models\VendorBankAccount;
+use App\Models\Wallet;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // 0. إنشاء Admin user مع محفظة الموقع
+        $adminUser = User::create([
+            'name' => 'Platform Admin',
+            'first_name' => 'Platform',
+            'last_name' => 'Admin',
+            'email' => 'admin@platform.com',
+            'password' => Hash::make('admin123'),
+            'role' => 'admin',
+            'status' => 'active',
+        ]);
+
+        $adminVendor = Vendor::create([
+            'user_id' => $adminUser->id,
+            'store_name' => 'Platform Commission Wallet',
+            'verification_status' => 'verified',
+            'verification_date' => now(),
+            'commission_rate' => 1.0, // 100% (كل المال للموقع)
+        ]);
+
+        Wallet::create([
+            'vendor_id' => $adminVendor->id,
+            'balance' => 0,
+        ]);
+
         // 1. إنشاء المستخدمين (زبائن ومدراء)
         $customers = User::factory(10)->create(['role' => 'customer']);
         User::factory()->create([
@@ -36,6 +62,14 @@ class DatabaseSeeder extends Seeder
             ->has(VendorDocument::factory()->count(2), 'documents')
             ->has(VendorBankAccount::factory()->count(1), 'bankAccounts')
             ->create();
+
+        // إنشاء محافظ للبائعين
+        foreach ($vendors as $vendor) {
+            Wallet::create([
+                'vendor_id' => $vendor->id,
+                'balance' => 0,
+            ]);
+        }
 
         // 4. إنشاء الكوبونات
         $coupons = Coupon::factory(5)->create();

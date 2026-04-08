@@ -19,6 +19,7 @@ protected $fillable = [
         'verification_status',
         'verification_reject_reason',
         'verification_date',
+        'commission_rate',
     ];
 
 

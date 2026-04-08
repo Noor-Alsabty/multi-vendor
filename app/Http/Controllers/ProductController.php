@@ -9,8 +9,8 @@ use App\Models\ProductVariant;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
     /**
@@ -183,7 +183,8 @@ class ProductController extends Controller
             // اجلب فقط النشط
             $products = $query->where('is_active', true)->get();
         }
-$user = auth()->user();
+        
+$user = Auth::user();
 $notifications = $user ? $user->notifications : collect();   
 // dd($products);
 return view('welcome', [
@@ -194,7 +195,7 @@ return view('welcome', [
 ]);
     
     }
-       public function indexsearch(Request $request)
+    public function indexsearch(Request $request)
 {
     $query = Product::with(['vendor','category']);
 
@@ -204,7 +205,7 @@ return view('welcome', [
     }
 
     $products = $query->get();
-$user = auth()->user();
+$user = Auth::user();
 
     return view('welcome', [
     'user' => $user,
