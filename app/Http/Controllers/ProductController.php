@@ -9,7 +9,6 @@ use App\Models\ProductVariant;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 class ProductController extends Controller
@@ -173,9 +172,9 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
     // 
-     public function ind(Request $request)
+    public function ind(Request $request)
     {
-       $query = Product::with(['vendor', 'category','variants']);
+    $query = Product::with(['vendor', 'category','variants']);
 
         if ($request->query('status') === 'inactive') {
             // اجلب فقط غير النشط
@@ -185,7 +184,7 @@ class ProductController extends Controller
             $products = $query->where('is_active', true)->get();
         }
         
-$user = auth()->user();
+$user = Auth::user();
 $notifications = $user ? $user->notifications : collect();   
 // dd($products);
 return view('welcome', [
@@ -206,7 +205,7 @@ return view('welcome', [
     }
 
     $products = $query->get();
-$user = auth()->user();
+$user = Auth::user();
 
     return view('welcome', [
     'user' => $user,
