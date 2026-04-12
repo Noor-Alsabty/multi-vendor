@@ -72,13 +72,13 @@
                 <table class="table align-middle text-center">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Vendor</th>
                             <th>Category</th>
                             <th>Name</th>
                             <th>Price</th>
-                            <th>Views</th>
-                            <th>image</th>
+                            <th>Image</th>
+                            <th>Quantity</th>
+                            <th>Colors</th>
+                            <th>Sizes</th>
 
                             <th>Status</th>
                             <th>Actions</th>
@@ -87,13 +87,15 @@
 
                     <tbody>
                         @foreach ($products as $product)
+                            @php
+                                $totalStock = $product->variants->sum('stock');
+                                $colors = $product->variants->pluck('color')->filter()->unique()->values();
+                                $sizes = $product->variants->pluck('size')->filter()->unique()->values();
+                            @endphp
                             <tr>
-                                <th scope="row">{{ $product->id }}</th>
-                                <td>{{ $product->vendor_id }}</td>
-                                <td>{{ $product->category_id }}</td>
+                                <td>{{ $product->category->name ?? '-' }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->price }} $</td>
-                                <td>{{ $product->views }}</td>
                                 <td>
                                     @if ($product->images->count())
                                         @foreach ($product->images as $image)
@@ -104,6 +106,9 @@
                                         <span>No Image</span>
                                     @endif
                                 </td>
+                                <td>{{ $totalStock }}</td>
+                                <td>{{ $colors->isNotEmpty() ? $colors->implode(', ') : '-' }}</td>
+                                <td>{{ $sizes->isNotEmpty() ? $sizes->implode(', ') : '-' }}</td>
 
                                 <td>
                                     @if ($product->is_active)

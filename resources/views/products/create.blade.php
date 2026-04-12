@@ -25,6 +25,16 @@
             <div class="card p-4">
                 <h2 class="text-center mb-4"><i class="fas fa-box-open me-2"></i>Create New Product</h2>
 
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-4">
@@ -33,6 +43,9 @@
                      {{auth()->user()->vendor->store_name ?? 'No Store Assigned' }}                        
                     </span>
                         <input type="hidden" name="vendor_id" value="{{ auth()->user()->vendor->id ?? '' }}">
+                        @error('vendor_id')
+                            <div class="text-danger small mt-2">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -60,7 +73,7 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <label class="form-label">Product Description</label>
-                            <textarea name="description" class="form-control" rows="3" placeholder="Describe your product..."></textarea>
+                            <textarea name="description" class="form-control" rows="3" placeholder="Describe your product..." required></textarea>
                         </div>
                     </div>
 
@@ -68,7 +81,7 @@
 
                     <div class="mb-4">
                         <label class="form-label"><i class="fas fa-images me-2"></i>Product Gallery</label>
-                        <input type="file" name="images[]" class="form-control" multiple accept="image/*" id="imageInput">
+                        <input type="file" name="images[]" class="form-control" multiple accept="image/*" id="imageInput" required>
                         <div id="imagePreview" class="preview-container d-flex flex-wrap gap-2 mt-3"></div>
                     </div>
 
@@ -86,19 +99,19 @@
                             <div class="row g-2">
                                 <div class="col-md-3">
                                     <label class="small fw-bold">Color</label>
-                                    <input type="text" name="variants[0][color]" class="form-control form-control-sm" placeholder="e.g. Blue">
+                                    <input type="text" name="variants[0][color]" class="form-control form-control-sm" placeholder="e.g. Blue" required>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="small fw-bold">Size</label>
-                                    <input type="text" name="variants[0][size]" class="form-control form-control-sm" placeholder="e.g. Large">
+                                    <input type="text" name="variants[0][size]" class="form-control form-control-sm" placeholder="e.g. Large" required>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="small fw-bold">SKU</label>
-                                    <input type="text" name="variants[0][SKU]" class="form-control form-control-sm" placeholder="SKU-123">
+                                    <input type="text" name="variants[0][SKU]" class="form-control form-control-sm" placeholder="SKU-123" required>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="small fw-bold">Stock</label>
-                                    <input type="number" name="variants[0][stock]" class="form-control form-control-sm" placeholder="0">
+                                    <input type="number" name="variants[0][stock]" class="form-control form-control-sm" placeholder="0" required>
                                 </div>
                             </div>
                         </div>
@@ -140,16 +153,16 @@
             <div class="variant-row">
                 <div class="row g-2">
                     <div class="col-md-3">
-                        <input type="text" name="variants[${variantIndex}][color]" class="form-control form-control-sm" placeholder="Color">
+                        <input type="text" name="variants[${variantIndex}][color]" class="form-control form-control-sm" placeholder="Color" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="variants[${variantIndex}][size]" class="form-control form-control-sm" placeholder="Size">
+                        <input type="text" name="variants[${variantIndex}][size]" class="form-control form-control-sm" placeholder="Size" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="variants[${variantIndex}][sku]" class="form-control form-control-sm" placeholder="SKU">
+                        <input type="text" name="variants[${variantIndex}][SKU]" class="form-control form-control-sm" placeholder="SKU" required>
                     </div>
                     <div class="col-md-2">
-                        <input type="number" name="variants[${variantIndex}][stock]" class="form-control form-control-sm" placeholder="Stock">
+                        <input type="number" name="variants[${variantIndex}][stock]" class="form-control form-control-sm" placeholder="Stock" required>
                     </div>
                     <div class="col-md-1 text-end">
                         <button type="button" class="btn btn-danger btn-sm remove-variant"><i class="fas fa-trash"></i></button>

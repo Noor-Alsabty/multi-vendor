@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
+use App\Models\ProductVariant;
 use App\Models\Transaction;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
@@ -57,7 +58,13 @@ class PaymentController extends Controller
             return redirect()->away($session->url);
         } catch (\Throwable $exception) {
             report($exception);
-            return redirect()->route('checkout.show')->with('error', 'حدث خطأ أثناء إنشاء الدفع. الرجاء المحاولة مرة أخرى لاحقاً.');
+            $errorMessage = 'حدث خطأ أثناء إنشاء الدفع. الرجاء المحاولة مرة أخرى لاحقاً.';
+
+            if (config('app.debug')) {
+                $errorMessage = 'Stripe error: ' . $exception->getMessage();
+            }
+
+            return redirect()->route('checkout.show')->with('error', $errorMessage);
         }
     }
 
@@ -88,6 +95,7 @@ class PaymentController extends Controller
                     'status' => 'confirmed',
                 ]);
 
+                $this->deductStockAndDeactivateIfNeeded($cart);
                 $this->createOrderItems($order, $cart);
                 $this->distributeVendorPayments($cart, $order);
                 $this->createPaymentRecord($order, $session);
@@ -161,6 +169,35 @@ class PaymentController extends Controller
                 'quantity' => $item->quantity,
                 'price' => $price,
             ]);
+        }
+    }
+
+    protected function deductStockAndDeactivateIfNeeded(Cart $cart): void
+    {
+        foreach ($cart->items as $item) {
+            $variant = ProductVariant::with('product')
+                ->lockForUpdate()
+                ->find($item->variant_id);
+
+            if (! $variant) {
+                throw new \RuntimeException('العنصر المطلوب غير متوفر.');
+            }
+
+            if ($variant->stock < $item->quantity) {
+                throw new \RuntimeException('المخزون غير كافٍ لأحد العناصر في السلة.');
+            }
+
+            $variant->decrement('stock', $item->quantity);
+
+            $product = $variant->product;
+            if (! $product) {
+                continue;
+            }
+
+            $hasAvailableStock = $product->variants()->where('stock', '>', 0)->exists();
+            if (! $hasAvailableStock && $product->is_active) {
+                $product->update(['is_active' => false]);
+            }
         }
     }
 

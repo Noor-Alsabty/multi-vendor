@@ -21,7 +21,7 @@ class ProductController extends Controller
     if (!$vendor) {
         return redirect()->back()->with('error','لا يوجد متجر لهذا المستخدم');
     }
-        $query = Product::with(['vendor', 'category'])
+        $query = Product::with(['vendor', 'category', 'variants', 'images'])
         ->where('vendor_id', $vendor->id);
 
         if ($request->query('status') === 'inactive') {
@@ -63,16 +63,16 @@ class ProductController extends Controller
             'vendor_id'   => 'required|exists:vendors,id',
             'category_id' => 'required|exists:categories,id',
             'name'        => 'required|string|max:255|min:3',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'price'       => 'required|numeric|min:0',
         ]);
 
         $imageData = $request->validate([
-            'images'   => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'images'   => 'required|array|min:1',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
         $variantData = $request->validate([
-            'variants'         => 'nullable|array',
+            'variants'         => 'required|array|min:1',
             'variants.*.color' => 'required|string',
             'variants.*.size'  => 'required|string',
             'variants.*.stock' => 'required|integer|min:0',
@@ -89,6 +89,9 @@ class ProductController extends Controller
         }
         if (!empty($variantData['variants'])) {
             foreach ($variantData['variants'] as $variant) {
+                if (blank($variant['color'] ?? null) || blank($variant['size'] ?? null) || blank($variant['SKU'] ?? null) || ($variant['stock'] ?? null) === null) {
+                    continue;
+                }
                 $product->variants()->create($variant);
             }
         }
@@ -125,16 +128,17 @@ class ProductController extends Controller
             'vendor_id'   => 'required|exists:vendors,id',
             'category_id' => 'required|exists:categories,id',
             'name'        => 'required|string|max:255|min:3',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'price'       => 'required|numeric|min:0',
         ]);
 
         $request->validate([
+            'images'   => 'nullable|array|min:1',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $variantData = $request->validate([
-            'variants'         => 'nullable|array',
+            'variants'         => 'required|array|min:1',
             'variants.*.color' => 'required|string',
             'variants.*.size'  => 'required|string',
             'variants.*.stock' => 'required|integer|min:0',
