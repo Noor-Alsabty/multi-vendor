@@ -22,6 +22,13 @@
                     @error('price') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label>Description</label>
+                    <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="3" required>{{ old('description', $product->description) }}</textarea>
+                    @error('description') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+            </div>
             
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -115,10 +122,10 @@
         const html = `
             <div class="variant-row border p-3 mb-2 bg-light">
                 <div class="row">
-                    <div class="col-md-3"><input type="text" name="variants[${variantIndex}][color]" class="form-control" placeholder="Color"></div>
-                    <div class="col-md-3"><input type="text" name="variants[${variantIndex}][size]" class="form-control" placeholder="Size"></div>
-                    <div class="col-md-3"><input type="number" name="variants[${variantIndex}][stock]" class="form-control" placeholder="Stock"></div>
-                    <div class="col-md-3"><input type="text" name="variants[${variantIndex}][sku]" class="form-control" placeholder="SKU"></div>
+                    <div class="col-md-3"><input type="text" name="variants[${variantIndex}][color]" class="form-control" placeholder="Color" required></div>
+                    <div class="col-md-3"><input type="text" name="variants[${variantIndex}][size]" class="form-control" placeholder="Size" required></div>
+                    <div class="col-md-3"><input type="number" name="variants[${variantIndex}][stock]" class="form-control" placeholder="Stock" required></div>
+                    <div class="col-md-3"><input type="text" name="variants[${variantIndex}][SKU]" class="form-control" placeholder="SKU" required></div>
                 </div>
             </div>`;
         container.insertAdjacentHTML('beforeend', html);
