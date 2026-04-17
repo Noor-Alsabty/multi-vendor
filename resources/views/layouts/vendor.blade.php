@@ -40,7 +40,7 @@
         <a href="#"><i class="fas fa-truck"></i> Shipping Details</a>
 
         <div class="sidebar-section">Financials</div>
-        <a href="#"><i class="fas fa-wallet"></i> My Wallet</a>
+        <a href="{{ route('vendor.wallet') }}"><i class="fas fa-wallet"></i> My Wallet</a>
         <a href="#"><i class="fas fa-hand-holding-usd"></i> Withdrawal Requests</a>
 
         <div style="margin-top: 50px;">

@@ -2,12 +2,19 @@
 
 @section('content')
 <div class="container-fluid py-4">
+    @if(!$wallet)
+    <div class="alert alert-warning mb-4 text-center">
+        <h5 class="mb-0">Your wallet is not set up yet.</h5>
+        <p class="mb-0">Please contact support to create your wallet and start tracking your earnings.</p>
+    </div>
+    @endif
+
     <div class="row mb-4">
         <div class="col-md-4">
             <div class="card border-0 shadow-sm bg-primary text-white">
                 <div class="card-body p-3 text-center">
                     <h6 class="text-white-50 uppercase small">Current Balance</h6>
-                    <h2 class="fw-bold mb-0">{{ number_format($wallet->balance, 2) }} $</h2>
+                    <h2 class="fw-bold mb-0">{{ number_format($wallet->balance ?? 0, 2) }} $</h2>
                 </div>
             </div>
         </div>
@@ -15,8 +22,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-3 text-center">
                     <h6 class="text-muted uppercase small">Total Earnings</h6>
-                    {{-- استخدام الـ Scope لحساب المجموع --}}
-                    <h2 class="fw-bold mb-0 text-success">+{{ number_format($wallet->transactions()->deposits()->sum('amount'), 2) }} $</h2>
+                    <h2 class="fw-bold mb-0 text-success">+{{ number_format($totalDeposits, 2) }} $</h2>
                 </div>
             </div>
         </div>
@@ -24,8 +30,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-3 text-center">
                     <h6 class="text-muted uppercase small">Total Withdrawals</h6>
-                    {{-- استخدام الـ Scope لحساب السحوبات --}}
-                    <h2 class="fw-bold mb-0 text-danger">-{{ number_format($wallet->transactions()->withdrawals()->sum('amount'), 2) }} $</h2>
+                    <h2 class="fw-bold mb-0 text-danger">-{{ number_format($totalWithdrawals, 2) }} $</h2>
                 </div>
             </div>
         </div>
@@ -49,7 +54,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($wallet->transactions()->latest()->get() as $transaction)
+                        @forelse($transactions as $transaction)
                         <tr>
                             <td>
                                 <span class="badge {{ $transaction->type == 'deposit' ? 'bg-success' : 'bg-danger' }}">
@@ -61,7 +66,7 @@
                             </td>
                             <td class="text-muted small">{{ number_format($transaction->balance_before, 2) }} $</td>
                             <td class="fw-bold">{{ number_format($transaction->balance_after, 2) }} $</td>
-                            <td>{{ $transaction->description }}</td>
+                            <td>{{ $transaction->display_description ?? $transaction->description }}</td>
                             <td>{{ $transaction->created_at->format('M d, Y H:i') }}</td>
                         </tr>
                         @empty
