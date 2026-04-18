@@ -232,7 +232,7 @@
                                         <div class="nav-item dropdown">
                                   <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown">
                                      <i class="fas fa-bell me-2"></i>
-                                      <span class="badge">{{ count($notifications) }}</span>
+                                        <span class="badge">{{ Auth::user()->notifications->count() }}</span>
                                     </a>
                                           <ul class="dropdown-menu dropdown-menu-end">
                              <!-- Auth::user()-> -->

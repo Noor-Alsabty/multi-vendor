@@ -95,6 +95,9 @@ class ProductController extends Controller
                 $product->variants()->create($variant);
             }
         }
+
+        $product->syncActiveStatusWithStock();
+
         return redirect()->route('products.index');
     }
 
@@ -161,6 +164,8 @@ class ProductController extends Controller
             }
         }
 
+        $product->syncActiveStatusWithStock();
+
         return redirect()->route('products.index')->with('success', 'تم تحديث المنتج بنجاح');
     }
 
@@ -176,9 +181,9 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
     // 
-     public function ind(Request $request)
+    public function ind(Request $request)
     {
-       $query = Product::with(['vendor', 'category','variants']);
+        $query = Product::with(['vendor', 'category','variants']);
 
         if ($request->query('status') === 'inactive') {
             // اجلب فقط غير النشط
