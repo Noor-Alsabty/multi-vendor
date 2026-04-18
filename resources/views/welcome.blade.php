@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
         .work-sans {
@@ -93,20 +93,17 @@
                                 href="#">Shop</a></li>
                         <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4"
                                 href="#">About</a></li>
+
                     </ul>
                 </nav>
-                <form method="GET" action="{{ route('product.indexsearch') }}" style="margin-bottom:20px; text-align:center;">
-    <input 
-        type="text"
-        name="search"
-        placeholder="ابحث عن منتج"
-        value="{{ request('search') }}"
-        style="padding:8px;width:250px"
-    >
+                <form method="GET" action="{{ route('product.indexsearch') }}"
+                    style="margin-bottom:20px; text-align:center;">
+                    <input type="text" name="search" placeholder="Search for a product"
+                        value="{{ request('search') }}" style="padding:8px;width:250px">
 
-    <button type="submit">🔍</button>
+                    <button type="submit">🔍</button>
 
-</form>
+                </form>
             </div>
 
             <div class="order-1 md:order-2">
@@ -206,7 +203,6 @@
                                         Logout
                                     </button>
                                 </form>
-
                             @else
                                 <div class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
                                     Account</div>
@@ -221,56 +217,59 @@
                                     CREATE ACCOUNT
                                 </a>
                             @endauth
-                            
+
 
                             <div class="border-t border-gray-50 my-1"></div>
-                
+
                         </div>
                     </div>
                 </div>
-                  @auth
-                                        <div class="nav-item dropdown">
-                                  <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown">
-                                     <i class="fas fa-bell me-2"></i>
-                                        <span class="badge">{{ Auth::user()->notifications->count() }}</span>
-                                    </a>
-                                          <ul class="dropdown-menu dropdown-menu-end">
-                             <!-- Auth::user()-> -->
-                              @if(Auth::user()->notifications->count()>0)
-                            @foreach(Auth::user()->notifications as $notification)
-                                 @if($notification->status=="unread")
-                                 <li>
-                                <a  class="dropdown-item"href="{{route('notification.read',$notification->id)}}">
-                                    <i class="fas fa-eye-slash text-danger  me-2"></i>
-                                        <strong> {{$notification->title}} </strong>  
-                                 <p>{{$notification->message}}</p>
-                                    <span class="text-muted">{{$notification->created_at->diffForHumans()}}</span>
-                                    <span class="text-muted">{{$notification->status}}</span>
-                                </a>
+                @auth
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
+                            data-bs-toggle="dropdown">
+                            <i class="fas fa-bell me-2"></i>
+                            <span class="badge">{{ count($notifications) }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <!-- Auth::user()-> -->
+                            @if (Auth::user()->notifications->count() > 0)
+                                @foreach (Auth::user()->notifications as $notification)
+                                    @if ($notification->status == 'unread')
+                                        <li>
+                                            <a
+                                                class="dropdown-item"href="{{ route('notification.read', $notification->id) }}">
+                                                <i class="fas fa-eye-slash text-danger  me-2"></i>
+                                                <strong> {{ $notification->title }} </strong>
+                                                <p>{{ $notification->message }}</p>
+                                                <span
+                                                    class="text-muted">{{ $notification->created_at->diffForHumans() }}</span>
+                                                <span class="text-muted">{{ $notification->status }}</span>
+                                            </a>
 
-                                </li>
-                                 @endif
-                             @if($notification->status=="read")
-                             <li>
-                                <a  class="dropdown-item" href="{{route('notification.read',$notification->id)}}">
-                                    <i class="fas fa-eye text-primary  me-2"></i>
-                                        <strong> {{$notification->title}} </strong>  
-                                 <p>{{$notification->message}}</p>
-                                    <span class="text-muted">{{$notification->created_at->diffForHumans()}}</span>
-                                    <span class="text-muted">{{$notification->status}}</span>
-                                </a>
+                                        </li>
+                                    @endif
+                                    @if ($notification->status == 'read')
+                                        <li>
+                                            <a class="dropdown-item"
+                                                href="{{ route('notification.read', $notification->id) }}">
+                                                <i class="fas fa-eye text-primary  me-2"></i>
+                                                <strong> {{ $notification->title }} </strong>
+                                                <p>{{ $notification->message }}</p>
+                                                <span
+                                                    class="text-muted">{{ $notification->created_at->diffForHumans() }}</span>
+                                                <span class="text-muted">{{ $notification->status }}</span>
+                                            </a>
 
-                             </li>
-                             @endif
-                            @endforeach
-                          
-                           
-                              @else
-                            <li class="dropdown-item">no notification</li>  
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @else
+                                <li class="dropdown-item">no notification</li>
                             @endif
                         </ul>
-                              </div>
-                               @endauth
+                    </div>
+                @endauth
                 <a class="pl-3 inline-block no-underline hover:text-black relative shake-it"
                     href="{{ Auth::check() ? url('/carts') : url('/empty-cart') }}">
 
@@ -421,15 +420,15 @@
                 </div>
             </nav>
 
-     @if(isset($products) && $products->count())
-    @foreach ($products as $product)
-        <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
-            <a href="#">
-                @if($product->images->count())
-                    <img class="hover:grow hover:shadow-lg" 
-                         src="{{ asset('storage/' . $product->images->first()->image_url) }}" 
-                         alt="{{ $product->name }}">
-                @endif
+            @if (isset($products) && $products->count())
+                @foreach ($products as $product)
+                    <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+                        <a href="{{ route('products.show', $product->id) }}">
+                            @if ($product->images->count())
+                                <img class="hover:grow hover:shadow-lg"
+                                    src="{{ asset('storage/' . $product->images->first()->image_url) }}"
+                                    alt="{{ $product->name }}">
+                            @endif
 
                             <div class="pt-3 flex items-center justify-between">
                                 <p>{{ $product->name }}</p>
@@ -456,13 +455,10 @@
                                     </button>
                                     <!-- <input type="number" name="quantity" value="1" min="1"
                                         class="w-16 text-center border rounded"> -->
-      <input type="number" 
-       name="quantity" 
-       value="1" 
-       min="1" 
-       max="{{$product->variants->sum('stock')}}"
-       oninput="if(this.value > this.max) this.value = this.max"
-       class="w-16 text-center border rounded">{{$product->variants->sum('stock')}}
+                                    <input type="number" name="quantity" value="1" min="1"
+                                        max="{{ $product->variants->sum('stock') }}"
+                                        oninput="if(this.value > this.max) this.value = this.max"
+                                        class="w-16 text-center border rounded">{{ $product->variants->sum('stock') }}
                                     <button type="button" onclick="this.previousElementSibling.stepUp()"
                                         class="px-3 py-1 bg-gray-300 rounded">
                                         +
@@ -578,33 +574,34 @@
         </div>
         </div>
     </footer>
- <script>
-//  والنقصان الزيادة لأزرار    // 
-function increaseQty(btn) {
-    let input = btn.parentElement.querySelector('input[name="quantity"]');
-    let max = parseInt(input.max);
+    <script>
+        //  والنقصان الزيادة لأزرار    //
+        function increaseQty(btn) {
+            let input = btn.parentElement.querySelector('input[name="quantity"]');
+            let max = parseInt(input.max);
 
-    if (parseInt(input.value) < max) {
-        input.value = parseInt(input.value) + 1;
-    }
-}
+            if (parseInt(input.value) < max) {
+                input.value = parseInt(input.value) + 1;
+            }
+        }
 
-function decreaseQty(btn) {
-    let input = btn.parentElement.querySelector('input[name="quantity"]');
-    if (parseInt(input.value) > 1) {
-        input.value = parseInt(input.value) - 1;
-    }
-}
-function toggleHeart(el) { 
-    if (el.classList.contains('text-red-500')) {
-        el.classList.remove('text-red-500');
-        el.classList.add('text-gray-500');
-    } else {
-        el.classList.remove('text-gray-500');
-        el.classList.add('text-red-500');
-    }
-}
-</script>
+        function decreaseQty(btn) {
+            let input = btn.parentElement.querySelector('input[name="quantity"]');
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        function toggleHeart(el) {
+            if (el.classList.contains('text-red-500')) {
+                el.classList.remove('text-red-500');
+                el.classList.add('text-gray-500');
+            } else {
+                el.classList.remove('text-gray-500');
+                el.classList.add('text-red-500');
+            }
+        }
+    </script>
 
 
 </body>

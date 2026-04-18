@@ -18,7 +18,7 @@ use App\Http\Controllers\WelcomeController;
 
 Route::get('/search', [ProductController::class, 'indexsearch'])->name('product.indexsearch');
 Route::get('/', [ProductController::class, 'ind'])->name('pro.ind');
-
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -48,7 +48,7 @@ Route::middleware(['auth', 'vendor'])->group(function () {
         Route::get('/my-wallet', [WalletController::class, 'index'])->name('vendor.wallet');
     });
 });
-Route::get('/notification/read/{notification_id}',[NotificationController::class,'read'])->name('notification.read');
+Route::get('/notification/read/{notification_id}', [NotificationController::class, 'read'])->name('notification.read');
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('admin.index');
@@ -75,13 +75,15 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
     Route::post('/carts/store/{variant_id}', [CartItemController::class, 'store'])->name('carts.store');
     Route::delete('/carts/item/{id}',  [CartItemController::class, 'destroy'])->name('carts.destroy');
-    
+
+
+
     Route::get('/checkout', [PaymentController::class, 'showCheckoutPage'])->name('checkout.show');
 
-// 2. إرسال البيانات إلى Stripe 
-Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+    // 2. إرسال البيانات إلى Stripe
+    Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
 
-// 3. روابط العودة
-Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
-Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+    // 3. روابط العودة
+    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
 });
