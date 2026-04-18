@@ -11,18 +11,20 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {$vendor = Vendor::where('user_id', Auth::id())->first();
-    if (!$vendor) {
-        return redirect()->back()->with('error','لا يوجد متجر لهذا المستخدم');
-    }
+    {
+        $vendor = Vendor::where('user_id', Auth::id())->first();
+        if (!$vendor) {
+            return redirect()->back()->with('error', 'لا يوجد متجر لهذا المستخدم');
+        }
         $query = Product::with(['vendor', 'category', 'variants', 'images'])
-        ->where('vendor_id', $vendor->id);
+            ->where('vendor_id', $vendor->id);
 
         if ($request->query('status') === 'inactive') {
             // اجلب فقط غير النشط
@@ -101,10 +103,15 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+
+        $product = Product::with('variants')->findOrFail($id);
+
+        return view('products.show', compact('product'));
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -175,10 +182,10 @@ class ProductController extends Controller
 
         return redirect()->route('products.index');
     }
-    // 
-     public function ind(Request $request)
+    //
+    public function ind(Request $request)
     {
-       $query = Product::with(['vendor', 'category','variants']);
+        $query = Product::with(['vendor', 'category', 'variants']);
 
         if ($request->query('status') === 'inactive') {
             // اجلب فقط غير النشط
@@ -187,33 +194,32 @@ class ProductController extends Controller
             // اجلب فقط النشط
             $products = $query->where('is_active', true)->get();
         }
-        
-$user = Auth::user();
-$notifications = $user ? $user->notifications : collect();   
-// dd($products);
-return view('welcome', [
-    'user' => $user,
-    'products' => $products,
-    'notifications'=>$notifications
 
-]);
-    
+        $user = Auth::user();
+        $notifications = $user ? $user->notifications : collect();
+        // dd($products);
+        return view('welcome', [
+            'user' => $user,
+            'products' => $products,
+            'notifications' => $notifications
+
+        ]);
     }
     public function indexsearch(Request $request)
-{
-    $query = Product::with(['vendor','category']);
+    {
+        $query = Product::with(['vendor', 'category']);
 
-    // البحث
-    if ($request->search) {
-        $query->where('name', 'like', '%' . $request->search . '%');
+        // البحث
+        if ($request->search) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $products = $query->get();
+        $user = Auth::user();
+
+        return view('welcome', [
+            'user' => $user,
+            'products' => $products
+        ]);
     }
-
-    $products = $query->get();
-$user = Auth::user();
-
-    return view('welcome', [
-    'user' => $user,
-    'products' => $products
-]);
-}
 }
