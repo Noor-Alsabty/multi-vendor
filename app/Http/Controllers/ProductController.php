@@ -97,6 +97,9 @@ class ProductController extends Controller
                 $product->variants()->create($variant);
             }
         }
+
+        $product->syncActiveStatusWithStock();
+
         return redirect()->route('products.index');
     }
 
@@ -167,6 +170,8 @@ class ProductController extends Controller
                 $product->variants()->create($variant);
             }
         }
+
+        $product->syncActiveStatusWithStock();
 
         return redirect()->route('products.index')->with('success', 'تم تحديث المنتج بنجاح');
     }

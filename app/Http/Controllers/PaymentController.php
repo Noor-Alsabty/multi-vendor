@@ -35,10 +35,8 @@ class PaymentController extends Controller
     {
         try {
             $this->setStripeApiKey();
-
             $user = Auth::user();
             $cart = $this->getCartForUser($user->id);
-
             if (!$cart || $cart->items->isEmpty()) {
                 return redirect()->route('carts.index')->with('error', 'سلتك فارغة!');
             }

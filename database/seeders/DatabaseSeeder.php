@@ -23,39 +23,56 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // 0. إنشاء Admin user مع محفظة الموقع
-        $adminUser = User::create([
-            'name' => 'Platform Admin',
-            'first_name' => 'Platform',
-            'last_name' => 'Admin',
-            'email' => 'admin@platform.com',
-            'password' => Hash::make('admin123'),
-            'role' => 'admin',
-            'status' => 'active',
-        ]);
+        $adminUser = User::updateOrCreate(
+            ['email' => 'admin@platform.com'],
+            [
+                'name' => 'Platform Admin',
+                'first_name' => 'Platform',
+                'last_name' => 'Admin',
+                'password' => Hash::make('admin123'),
+                'role' => 'admin',
+                'status' => 'active',
+            ]
+        );
 
-        $adminVendor = Vendor::create([
-            'user_id' => $adminUser->id,
-            'store_name' => 'Platform Commission Wallet',
-            'verification_status' => 'verified',
-            'verification_date' => now(),
-            'commission_rate' => 1.0, // 100% (كل المال للموقع)
-        ]);
+        $adminVendor = Vendor::updateOrCreate(
+            ['user_id' => $adminUser->id],
+            [
+                'store_name' => 'Platform Commission Wallet',
+                'verification_status' => 'verified',
+                'verification_date' => now(),
+                'commission_rate' => 1.0, // 100% (كل المال للموقع)
+            ]
+        );
 
-        Wallet::create([
-            'vendor_id' => $adminVendor->id,
-            'balance' => 0,
-        ]);
+        Wallet::firstOrCreate(
+            ['vendor_id' => $adminVendor->id],
+            ['balance' => 0]
+        );
 
         // 1. إنشاء المستخدمين (زبائن ومدراء)
         $customers = User::factory(10)->create(['role' => 'customer']);
-        User::factory()->create([
-    'name' => 'Admin',
-    'email' => 'admin@store.com',
-    'password' => bcrypt('password123'), // تشفير كلمة السر ضروري
-    'role' => 'admin', // رقم الأدمن في نظامك
-]);
-        // 2. إنشاء الأصناف (Categories)
-        $categories = Category::factory(10)->create();
+        User::updateOrCreate(
+            ['email' => 'admin@store.com'],
+            [
+                'name' => 'Admin',
+                'first_name' => 'Admin',
+                'last_name' => 'Store',
+                'password' => bcrypt('password123'),
+                'role' => 'admin',
+                'status' => 'active',
+            ]
+        );
+        // 2. إنشاء الأصناف (Categories) بهيكل parent/child
+        $parentCategories = Category::factory(5)->create([
+            'parent_id' => null,
+        ]);
+
+        $childCategories = Category::factory(15)->create([
+            'parent_id' => fn() => $parentCategories->random()->id,
+        ]);
+
+        $categories = $parentCategories->concat($childCategories);
 
         // 3. إنشاء البائعين مع وثائقهم وحساباتهم البنكية
         $vendors = Vendor::factory(5)
@@ -78,7 +95,7 @@ class DatabaseSeeder extends Seeder
         // هذا الجزء مهم جداً لأن الطلبات تعتمد على variant_id
         $products = Product::factory(30)->create([
             'vendor_id' => fn() => $vendors->random()->id,
-            'category_id' => fn() => $categories->random()->id,
+            'category_id' => fn() => $childCategories->random()->id,
         ])->each(function ($product) {
             ProductVariant::factory(3)->create([
                 'product_id' => $product->id
