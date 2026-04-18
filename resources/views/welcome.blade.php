@@ -96,14 +96,6 @@
 
                     </ul>
                 </nav>
-                <form method="GET" action="{{ route('product.indexsearch') }}"
-                    style="margin-bottom:20px; text-align:center;">
-                    <input type="text" name="search" placeholder="Search for a product"
-                        value="{{ request('search') }}" style="padding:8px;width:250px">
-
-                    <button type="submit">🔍</button>
-
-                </form>
             </div>
 
             <div class="order-1 md:order-2">
@@ -305,12 +297,12 @@
                 hidden="" checked="checked">
             <div class="carousel-item absolute opacity-0" style="height:50vh;">
                 <div class="block h-full w-full mx-auto flex pt-6 md:pt-0 md:items-center bg-cover bg-right"
-                    style="background-image: url('https://images.unsplash.com/photo-1422190441165-ec2956dc9ecc?ixlib=rb-1.2.1&ixid=eJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80');">
+                    style="background-image: url('https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM0MTM2fQ&auto=format&fit=crop&w=1600&q=80');">
 
                     <div class="container mx-auto">
                         <div
                             class="flex flex-col w-full lg:w-1/2 md:ml-16 items-center md:items-start px-6 tracking-wide">
-                            <p class="text-black text-2xl my-4">Stripy Zig Zag Jigsaw Pillow and Duvet Set</p>
+                            <p class="text-black text-2xl my-4">Real Bamboo Wall Clock</p>
                             <a class="text-xl inline-block no-underline border-b border-gray-600 leading-relaxed hover:text-black hover:border-black"
                                 href="#">view product</a>
                         </div>
@@ -328,12 +320,12 @@
                 hidden="">
             <div class="carousel-item absolute opacity-0 bg-cover bg-right" style="height:50vh;">
                 <div class="block h-full w-full mx-auto flex pt-6 md:pt-0 md:items-center bg-cover bg-right"
-                    style="background-image: url('https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM0MTM2fQ&auto=format&fit=crop&w=1600&q=80');">
+                    style="background-image: url('https://images.unsplash.com/photo-1422190441165-ec2956dc9ecc?ixlib=rb-1.2.1&ixid=eJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80');">
 
                     <div class="container mx-auto">
                         <div
                             class="flex flex-col w-full lg:w-1/2 md:ml-16 items-center md:items-start px-6 tracking-wide">
-                            <p class="text-black text-2xl my-4">Real Bamboo Wall Clock</p>
+                            <p class="text-black text-2xl my-4">Stripy Zig Zag Jigsaw Pillow and Duvet Set</p>
                             <a class="text-xl inline-block no-underline border-b border-gray-600 leading-relaxed hover:text-black hover:border-black"
                                 href="#">view product</a>
                         </div>
@@ -399,7 +391,7 @@
                         Store
                     </a>
 
-                    <div class="flex items-center" id="store-nav-content">
+                    <div class="flex items-center gap-3" id="store-nav-content">
 
                         <a class="pl-3 inline-block no-underline hover:text-black" href="#">
                             <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg"
@@ -408,13 +400,18 @@
                             </svg>
                         </a>
 
-                        <a class="pl-3 inline-block no-underline hover:text-black" href="#">
-                            <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24">
-                                <path
-                                    d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z" />
-                            </svg>
-                        </a>
+                        <form method="GET" action="{{ route('product.indexsearch') }}" class="flex items-center gap-2">
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                placeholder="Search products..."
+                                class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
+                            <button type="submit" class="inline-block no-underline hover:text-black" aria-label="Search">
+                                <svg class="fill-current text-black hover:text-gray-700" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24">
+                                    <path
+                                        d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z" />
+                                </svg>
+                            </button>
+                        </form>
 
                     </div>
                 </div>
@@ -496,7 +493,7 @@
                 href="#">
                 About
             </a>
-
+{{-- 
             <p class="mt-8 mb-8">This template is inspired by the stunning nordic minimalist design - in particular:
                 <br>
                 <a class="text-gray-800 underline hover:text-gray-900" href="http://savoy.nordicmade.com/"
@@ -504,7 +501,7 @@
                     href="https://nordicmade.com/">https://nordicmade.com/</a> and <a
                     class="text-gray-800 underline hover:text-gray-900" href="https://www.metricdesign.no/"
                     target="_blank">https://www.metricdesign.no/</a>
-            </p>
+            </p> --}}
 
             <p class="mb-8">Lorem ipsum dolor sit amet, consectetur <a href="#">random link</a> adipiscing
                 elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel risus commodo viverra

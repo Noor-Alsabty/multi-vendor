@@ -32,7 +32,15 @@
 
             <!-- Image -->
             <div class="col-md-6">
-                <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded shadow">
+                @if ($product->images->count())
+                    <img src="{{ asset('storage/' . $product->images->first()->image_url) }}"
+                        class="img-fluid rounded shadow" alt="{{ $product->name }}">
+                @else
+                    <div class="bg-light border rounded shadow d-flex align-items-center justify-content-center"
+                        style="height: 350px;">
+                        <span class="text-muted">No image available</span>
+                    </div>
+                @endif
             </div>
 
             <!-- Info -->

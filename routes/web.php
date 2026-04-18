@@ -18,7 +18,7 @@ use App\Http\Controllers\WelcomeController;
 
 Route::get('/search', [ProductController::class, 'indexsearch'])->name('product.indexsearch');
 Route::get('/', [ProductController::class, 'ind'])->name('pro.ind');
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/products/{id}', [ProductController::class, 'show'])->whereNumber('id')->name('products.show');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -69,9 +69,6 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/vendors-requests/index', [VendorsRequestController::class, 'index'])->name('vendors-requests.index');
     Route::get('/vendors-requests/create', [VendorsRequestController::class, 'create'])->name('vendors-requests.create');
     Route::post('/vendors-requests/store', [VendorsRequestController::class, 'store'])->name('vendors-requests.store');
-    Route::controller(ProductController::class)->group(function () {
-        Route::get('/products',  'index')->name('products.index');
-    });
     Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
     Route::post('/carts/store/{variant_id}', [CartItemController::class, 'store'])->name('carts.store');
     Route::delete('/carts/item/{id}',  [CartItemController::class, 'destroy'])->name('carts.destroy');

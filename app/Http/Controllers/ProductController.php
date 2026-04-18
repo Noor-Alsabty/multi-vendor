@@ -109,7 +109,7 @@ class ProductController extends Controller
     public function show($id)
     {
 
-        $product = Product::with('variants')->findOrFail($id);
+        $product = Product::with(['variants', 'images'])->findOrFail($id);
 
         return view('products.show', compact('product'));
     }
@@ -212,7 +212,8 @@ class ProductController extends Controller
     }
     public function indexsearch(Request $request)
     {
-        $query = Product::with(['vendor', 'category']);
+        $query = Product::with(['vendor', 'category', 'variants'])
+            ->where('is_active', true);
 
         // البحث
         if ($request->search) {
@@ -221,10 +222,12 @@ class ProductController extends Controller
 
         $products = $query->get();
         $user = Auth::user();
+        $notifications = $user ? $user->notifications : collect();
 
         return view('welcome', [
             'user' => $user,
-            'products' => $products
+            'products' => $products,
+            'notifications' => $notifications
         ]);
     }
 }
