@@ -51,4 +51,13 @@ public function reviews()
     return $this->hasMany(Review::class);
 }
 
+public function syncActiveStatusWithStock(): void
+{
+    $hasAvailableStock = $this->variants()->where('stock', '>', 0)->exists();
+
+    if ($this->is_active !== $hasAvailableStock) {
+        $this->update(['is_active' => $hasAvailableStock]);
+    }
+}
+
 }

@@ -15,20 +15,20 @@ class categoryFactory extends Factory
      *
      * @return array<string, mixed>
      */
-public function definition(): array
+    public function definition(): array
     {
-        // قائمة أصناف واقعية لتجنب الأسماء اللاتينية
+        // توليد أسماء واقعية قابلة للتوسع بدون مشكلة unique overflow.
         $categories = [
-            'Men Clothing', 'Women Fashion', 'Kids & Baby', 
-            'Footwear', 'Accessories', 'Sportswear', 
+            'Men Clothing', 'Women Fashion', 'Kids & Baby',
+            'Footwear', 'Accessories', 'Sportswear',
             'Watches', 'Handbags', 'Winter Collection', 'Summer Sale'
         ];
 
-        $name = $this->faker->unique()->randomElement($categories);
+        $name = $this->faker->randomElement($categories) . ' ' . strtoupper($this->faker->bothify('??##'));
 
         return [
             'name'      => $name,
-            'parent_id' => null, // نتركها نول حالياً ليتم التحكم بها من السيرفر
+            'parent_id' => null,
         ];
     }
 }
